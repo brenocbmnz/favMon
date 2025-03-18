@@ -1,0 +1,244 @@
+/* Apply the Google Font */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #98D2C0;
+    /* Fundo claro para o modo normal */
+    color: #205781;
+    /* Texto escuro */
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(to bottom, #98D2C0, #4F959D);
+    /* Gradiente com as cores da paleta */
+    padding: 5rem 0;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #205781;
+    /* Azul escuro para o navbar */
+}
+
+.navbar .nav-link {
+    color: #F6F8D5;
+    /* Texto claro no navbar */
+}
+
+.navbar .nav-link:hover {
+    color: #98D2C0;
+    /* Texto mais claro no hover */
+}
+
+.navbar .form-check-label {
+    color: #F6F8D5;
+    /* Texto claro para o toggle label */
+}
+
+/* Buttons */
+button {
+    border-radius: 50px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: #4F959D;
+    /* Azul médio para botões */
+    color: #F6F8D5;
+    /* Texto claro */
+    border: none;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: #205781;
+    /* Azul escuro no hover */
+    color: #F6F8D5;
+}
+
+/* Pokémon Cards */
+.card {
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: #4F959D;
+    /* Azul médio para o fundo do card */
+    color: #F6F8D5;
+    /* Texto claro */
+    width: 150px;
+    /* Smaller width */
+    height: 200px;
+    /* Smaller height */
+    margin: auto;
+    /* Center the card */
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: #205781;
+    /* Azul escuro no hover */
+}
+
+.card img {
+    height: 100px;
+    /* Smaller image */
+    object-fit: contain;
+    border-bottom: 2px solid #F6F8D5;
+    /* Borda clara */
+}
+
+.card .card-body {
+    padding: 10px;
+    /* Smaller padding */
+}
+
+/* Final Pokémon Section */
+#final-pokemon img {
+    border: 5px solid #F6F8D5;
+    /* Borda clara */
+}
+
+/* Home Page Buttons */
+.home-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    /* Space between buttons */
+}
+
+.home-buttons .btn {
+    width: 100px;
+    /* Square shape */
+    height: 100px;
+    /* Square shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    /* Smaller text */
+    position: relative;
+    overflow: hidden;
+}
+
+.home-buttons .btn i {
+    font-size: 50px;
+    /* Large icon */
+    position: absolute;
+    color: rgba(255, 255, 255, 0.2);
+    /* Faded icon */
+}
+
+.home-buttons .btn-primary {
+    background-color: #4F959D;
+}
+
+.home-buttons .btn-success {
+    background-color: #205781;
+}
+
+.home-buttons .btn-danger {
+    background-color: #98D2C0;
+}
+
+.home-buttons .btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Filter Menu Buttons */
+.filter-buttons .btn {
+    width: 150px;
+    /* Consistent width */
+    height: 50px;
+    /* Consistent height */
+    border-radius: 10px;
+    /* Rounded corners */
+    font-size: 14px;
+    /* Smaller text */
+    font-weight: 500;
+    /* Slightly bold text */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-buttons .btn-primary {
+    background-color: #4F959D;
+    /* Match theme */
+    color: #F6F8D5;
+    /* Light text */
+}
+
+.filter-buttons .btn-primary:hover {
+    background-color: #205781;
+    /* Darker hover color */
+    color: #F6F8D5;
+}
+
+.filter-buttons .btn-success {
+    background-color: #205781;
+    /* Match theme */
+    color: #F6F8D5;
+    /* Light text */
+}
+
+.filter-buttons .btn-success:hover {
+    background-color: #4F959D;
+    /* Lighter hover color */
+    color: #F6F8D5;
+}
+
+/* Night Mode Styles */
+body.night-mode {
+    background-color: #205781;
+    /* Azul escuro para o fundo do modo noturno */
+    color: #F6F8D5;
+    /* Texto claro */
+}
+
+body.night-mode .navbar {
+    background-color: #4F959D;
+    /* Azul médio para o navbar no modo noturno */
+}
+
+body.night-mode .hero {
+    background: linear-gradient(to bottom, #4F959D, #205781);
+    /* Gradiente para o modo noturno */
+}
+
+body.night-mode button {
+    background-color: #4F959D;
+    /* Azul médio para botões no modo noturno */
+    color: #F6F8D5;
+    /* Texto claro */
+}
+
+body.night-mode button:hover {
+    background-color: #205781;
+    /* Azul escuro no hover */
+    color: #F6F8D5;
+}
+
+body.night-mode .card {
+    background-color: #4F959D;
+    /* Azul médio para o fundo do card no modo noturno */
+    color: #F6F8D5;
+    /* Texto claro */
+    border: 1px solid #F6F8D5;
+    /* Borda clara */
+}
+
+body.night-mode .card img {
+    border-bottom: 2px solid #F6F8D5;
+    /* Borda clara */
+}
+
+body.night-mode #final-pokemon img {
+    border: 5px solid #F6F8D5;
+    /* Borda clara */
+}
+
+/* Night Mode Toggle Switch */
+body.night-mode .form-check-label {
+    color: #F6F8D5;
+    /* Texto claro para o toggle label no modo noturno */
+}
