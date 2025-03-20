@@ -17,6 +17,28 @@ const regions = {
     paldea: { name: "Paldea", startId: 906, endId: 1025 }
 };
 
+// Define type colors
+const typeColors = {
+    normal: '#A8A77A',
+    fire: '#EE8130',
+    water: '#6390F0',
+    electric: '#F7D02C',
+    grass: '#7AC74C',
+    ice: '#96D9D6',
+    fighting: '#C22E28',
+    poison: '#A33EA1',
+    ground: '#E2BF65',
+    flying: '#A98FF3',
+    psychic: '#F95587',
+    bug: '#A6B91A',
+    rock: '#B6A136',
+    ghost: '#735797',
+    dragon: '#6F35FC',
+    dark: '#705746',
+    steel: '#B7B7CE',
+    fairy: '#D685AD',
+};
+
 // Navigate to the home page
 function goToHomePage() {
     console.log("goToHomePage triggered"); // Debugging log
@@ -129,8 +151,7 @@ function populateRegionButtons() {
 
     Object.keys(regions).forEach(regionKey => {
         const button = document.createElement('button');
-        button.className = 'btn btn-primary mb-3'; // Use new styles
-        button.textContent = regions[regionKey].name;
+        button.className = `btn btn-${regionKey}`; // Assign specific class for each region
         button.onclick = () => {
             activeFilter = { type: 'region', value: regionKey };
             document.getElementById('region-selection').classList.add('d-none');
@@ -147,26 +168,41 @@ async function populateTypeButtons() {
     const typeContainer = document.getElementById('type-container');
     typeContainer.innerHTML = ''; // Clear previous buttons
 
-    const response = await fetch('https://pokeapi.co/api/v2/type/');
-    const data = await response.json();
+    try {
+        const response = await fetch('https://pokeapi.co/api/v2/type/');
+        const data = await response.json();
 
-    data.results.forEach(type => {
-        const button = document.createElement('button');
-        button.className = 'btn btn-success mb-3'; // Use new styles
-        button.textContent = type.name.charAt(0).toUpperCase() + type.name.slice(1);
-        button.onclick = async () => {
-            activeFilter = { type: 'type', value: type.name };
-            document.getElementById('type-selection').classList.add('d-none');
-            document.getElementById('favorite-pokemon').classList.remove('d-none');
-            const response = await fetch(`https://pokeapi.co/api/v2/type/${type.name}`);
-            const data = await response.json();
-            const typePokemonIds = data.pokemon
-                .map(p => parseInt(p.pokemon.url.split('/').slice(-2, -1)[0]))
-                .filter(id => id <= 1025); // Exclude Pokémon with IDs higher than 1025
-            startNewRound(typePokemonIds);
-        };
-        typeContainer.appendChild(button);
-    });
+        // Filter out "stellar" and "unknown" types
+        const filteredTypes = data.results.filter(
+            (type) => type.name !== 'unknown' && type.name !== 'stellar'
+        );
+
+        filteredTypes.forEach((type) => {
+            const button = document.createElement('button');
+            button.className = 'btn mb-3'; // Base button styles
+            button.textContent = type.name.charAt(0).toUpperCase() + type.name.slice(1);
+
+            // Set the background color based on the type
+            button.style.backgroundColor = typeColors[type.name] || '#CCCCCC'; // Default color if type not found
+            button.style.color = '#FFFFFF'; // Ensure text is readable
+
+            button.onclick = async () => {
+                activeFilter = { type: 'type', value: type.name };
+                document.getElementById('type-selection').classList.add('d-none');
+                document.getElementById('favorite-pokemon').classList.remove('d-none');
+                const response = await fetch(`https://pokeapi.co/api/v2/type/${type.name}`);
+                const data = await response.json();
+                const typePokemonIds = data.pokemon
+                    .map((p) => parseInt(p.pokemon.url.split('/').slice(-2, -1)[0]))
+                    .filter((id) => id <= 1025); // Exclude Pokémon with IDs higher than 1025
+                startNewRound(typePokemonIds);
+            };
+
+            typeContainer.appendChild(button);
+        });
+    } catch (error) {
+        console.error('Failed to fetch Pokémon types:', error);
+    }
 }
 
 // Utility function to shuffle an array

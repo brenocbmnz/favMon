@@ -57,6 +57,7 @@ body {
     font-size: 1.2rem;
     color: var(--text-color);
     text-transform: uppercase;
+    font-family: 'Bangers', cursive;
 }
 
 .navbar .nav-link {
@@ -93,6 +94,7 @@ body {
     font-size: 2.5rem;
     margin-bottom: 1rem;
     color: var(--primary-color);
+    font-family: 'Inter', sans-serif;
 }
 
 .hero p {
@@ -169,8 +171,17 @@ button:hover {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
+    /* Increased gap between buttons */
     margin: 2rem 0;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    /* Space between button and text */
 }
 
 .home-buttons .btn {
@@ -186,13 +197,25 @@ button:hover {
     color: var(--text-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background-color: var(--primary-color);
-    /* Apply the same color to all buttons */
+    background-size: 50%;
+    /* Adjust icon size */
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-.home-buttons .btn i {
-    font-size: 2rem;
-    position: absolute;
-    color: rgba(255, 255, 255, 0.2);
+/* Icon for "All Pokémon" button */
+.home-buttons .btn-all {
+    background-image: url('./assets/insignia.png');
+}
+
+/* Icon for "By Region" button */
+.home-buttons .btn-region {
+    background-image: url('./assets/game.png');
+}
+
+/* Icon for "By Type" button */
+.home-buttons .btn-type {
+    background-image: url('./assets/eevee.png');
 }
 
 .home-buttons .btn:hover {
@@ -200,6 +223,13 @@ button:hover {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
     background-color: var(--hover-color);
     /* Hover effect */
+}
+
+.button-container p {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: var(--text-color);
+    text-align: center;
 }
 
 /* Pokémon Cards */
@@ -274,6 +304,140 @@ button:hover {
     background-color: var(--secondary-color);
 }
 
+/* Type Menu Styles */
+#type-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    /* Limit to 6 columns */
+    gap: 20px;
+    /* Space between buttons */
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+#type-container .btn {
+    text-align: center;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    cursor: pointer;
+}
+
+#type-container .btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: var(--hover-color);
+}
+
+/* Remove centering for the Type Menu */
+#type-selection {
+    min-height: auto;
+    /* Reset height */
+    text-align: left;
+    /* Reset text alignment */
+}
+
+/* Region Menu Styles */
+#region-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Three columns */
+    gap: 25px;
+    /* Space between rows and columns */
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    margin: 2rem auto;
+    max-width: 800px;
+    /* Adjust container width for three items per row */
+}
+
+#region-container .btn {
+    width: 140px;
+    /* Increase button width */
+    height: 140px;
+    /* Increase button height */
+    border: 2px solid var(--primary-color);
+    /* Border size */
+    border-radius: 10px;
+    /* Slightly rounded corners */
+    background-color: transparent;
+    /* Transparent background */
+    background-size: 90%;
+    /* Increase icon size */
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    cursor: pointer;
+    padding: 0;
+    /* Remove padding */
+}
+
+#region-container .btn:hover {
+    transform: scale(1.1);
+    /* Slightly enlarge on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: var(--hover-color);
+    /* Hover background color */
+}
+
+/* Center a single button in the last row */
+#region-container> :nth-child(3n + 1):last-child {
+    grid-column: span 3;
+    /* Make the last button span three columns */
+    justify-self: center;
+    /* Center the button horizontally */
+}
+
+/* Specific icons for each region button */
+#region-container .btn-kanto {
+    background-image: url('./assets/kanto.svg');
+}
+
+#region-container .btn-johto {
+    background-image: url('./assets/johto.svg');
+}
+
+#region-container .btn-hoenn {
+    background-image: url('./assets/hoenn.svg');
+}
+
+#region-container .btn-sinnoh {
+    background-image: url('./assets/sinnoh.svg');
+}
+
+#region-container .btn-unova {
+    background-image: url('./assets/unova.svg');
+}
+
+#region-container .btn-kalos {
+    background-image: url('./assets/kalos.svg');
+}
+
+#region-container .btn-alola {
+    background-image: url('./assets/alola.svg');
+}
+
+#region-container .btn-galar {
+    background-image: url('./assets/galar.svg');
+}
+
+#region-container .btn-paldea {
+    background-image: url('./assets/paldea.svg');
+}
+
+/* Remove centering for the Region Menu */
+#region-selection {
+    min-height: auto;
+    /* Reset height */
+    text-align: left;
+    /* Reset text alignment */
+}
+
 /* Footer */
 .footer {
     background-color: var(--primary-color);
@@ -287,6 +451,15 @@ button:hover {
 .footer p {
     margin: 0;
     line-height: 1.5;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Apply Bangers font to headings */
+h1,
+h2,
+h3,
+.navbar-brand {
+    font-family: 'Inter', sans-serif;
 }
 
 /* Responsive Design */
@@ -312,5 +485,31 @@ button:hover {
     .filter-buttons .btn {
         width: 140px;
         height: 45px;
+    }
+
+    #type-container {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        /* Adjust for smaller screens */
+        gap: 15px;
+    }
+
+    #type-container .btn {
+        font-size: 0.9rem;
+        padding: 0.6rem;
+    }
+
+    #region-container {
+        grid-template-columns: repeat(2, 1fr);
+        /* Two columns for small screens */
+        gap: 20px;
+        /* Adjust gap for smaller screens */
+    }
+
+    #region-container .btn {
+        width: 120px;
+        /* Slightly smaller buttons */
+        height: 120px;
+        background-size: 80%;
+        /* Adjust icon size */
     }
 }
