@@ -330,9 +330,19 @@ async function displayFinalPokemon(pokemonId) {
 function toggleNightMode() {
     const body = document.body;
     const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
 
     body.classList.toggle('night-mode');
     themeToggle.checked = body.classList.contains('night-mode');
+
+    // Update the icon based on the mode
+    if (body.classList.contains('night-mode')) {
+        themeIcon.classList.remove('bi-brightness-high');
+        themeIcon.classList.add('bi-moon-stars');
+    } else {
+        themeIcon.classList.remove('bi-moon-stars');
+        themeIcon.classList.add('bi-brightness-high');
+    }
 }
 
 // Load the home page on page load

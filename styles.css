@@ -77,10 +77,31 @@ body {
     color: var(--text-color);
 }
 
+/* Increase the size of the Night Mode toggle icons */
+#theme-icon {
+    font-size: 1.5rem;
+    /* Adjust the size as needed */
+}
 
 /* Ensure the home screen is visible initially */
 #home-screen {
     display: block;
+}
+
+/* Center the Night Mode toggle vertically in the navbar */
+.form-check.form-switch {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    /* Ensure it aligns with the navbar height */
+}
+
+/* Center the icon and move it slightly to the right of the toggle */
+.form-check-label {
+    display: flex;
+    align-items: center;
+    margin-left: 0.5rem;
+    /* Move the icon slightly to the right */
 }
 
 /* Hero Section */

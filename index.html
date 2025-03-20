@@ -33,14 +33,18 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link fw-bold" href="#" onclick="goToHomePage()">Find out your favorite
-                            Pokémon!</a>
+                        <a class="nav-link fw-bold" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold" href="contact.html">Contact</a>
                     </li>
                 </ul>
-                <div class="form-check form-switch ms-3">
-                    <input class="form-check-input" type="checkbox" id="theme-toggle" onchange="toggleNightMode()">
-                    <label class="form-check-label" for="theme-toggle">Night Mode</label>
-                </div>
+            </div>
+            <div class="form-check form-switch ms-3">
+                <input class="form-check-input" type="checkbox" id="theme-toggle" onchange="toggleNightMode()">
+                <label class="form-check-label" for="theme-toggle">
+                    <i id="theme-icon" class="bi bi-brightness-high"></i>
+                </label>
             </div>
         </div>
     </nav>
@@ -50,9 +54,39 @@
         <div class="container text-center">
             <h1 class="display-4 fw-bold">Welcome to favPoke!</h1>
             <p class="lead">Discover your favorite Pokémon and explore the world of Pokémon like never before.</p>
-            <button class="btn btn-theme shadow mt-4" onclick="goToSelectionScreen()">Start the Game</button>
+            <div class="mt-4">
+                <button class="btn btn-theme shadow" onclick="goToSelectionScreen()">Start the Game</button>
+                <button class="btn btn-theme shadow ms-3" data-bs-toggle="modal" data-bs-target="#howItWorksModal">How
+                    it works</button>
+            </div>
         </div>
     </section>
+
+    <!-- How it Works Modal -->
+    <div class="modal fade" id="howItWorksModal" tabindex="-1" aria-labelledby="howItWorksModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="howItWorksModalLabel">How it Works</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Welcome to favPoke! Here's how you can use the app:</p>
+                    <ul>
+                        <li>Click "Start the Game" to begin discovering your favorite Pokémon.</li>
+                        <li>Choose a path: "All Pokémon," "By Region," or "By Type."</li>
+                        <li>Select your favorite Pokémon from the displayed options.</li>
+                        <li>Continue selecting until only one Pokémon remains – your favorite!</li>
+                        <li>Save your favorite Pokémon to the list for future reference.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-theme shadow" data-bs-dismiss="modal">Got it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Three-Button Menu -->
     <section id="three-button-menu" class="py-5 d-none">
@@ -121,7 +155,7 @@
     <footer class="footer bg-dark text-light py-3">
         <div class="container text-center">
             <p class="mb-0">2025 favPoke. All characters and related content belong to Nintendo.</p>
-            <p class="mb-0">Made with ❤️ by Breno</p>
+
         </div>
     </footer>
 
