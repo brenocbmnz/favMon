@@ -19,12 +19,53 @@ const regions = {
 
 // Navigate to the home page
 function goToHomePage() {
-    document.getElementById('home-page').classList.remove('d-none');
-    document.getElementById('favorite-pokemon').classList.add('d-none');
-    document.getElementById('region-selection').classList.add('d-none');
-    document.getElementById('type-selection').classList.add('d-none');
-    document.getElementById('final-pokemon').classList.add('d-none');
+    console.log("goToHomePage triggered"); // Debugging log
+
+    const homeScreen = document.getElementById('home-screen');
+    const threeButtonMenu = document.getElementById('three-button-menu');
+    const favoritePokemon = document.getElementById('favorite-pokemon');
+    const regionSelection = document.getElementById('region-selection');
+    const typeSelection = document.getElementById('type-selection');
+    const finalPokemon = document.getElementById('final-pokemon');
+
+    console.log("homeScreen:", homeScreen); // Log the home screen element
+
+    if (!homeScreen) {
+        console.error("homeScreen is missing in the DOM.");
+        return;
+    }
+
+    // Show the home screen and hide other sections
+    homeScreen.classList.remove('d-none');
+    threeButtonMenu.classList.add('d-none');
+    favoritePokemon.classList.add('d-none');
+    regionSelection.classList.add('d-none');
+    typeSelection.classList.add('d-none');
+    finalPokemon.classList.add('d-none');
+
     resetGame();
+}
+
+// Navigate to the three-button menu
+function goToSelectionScreen() {
+    console.log("goToSelectionScreen triggered"); // Debugging log
+
+    const homeScreen = document.getElementById('home-screen');
+    const threeButtonMenu = document.getElementById('three-button-menu');
+
+    console.log("homeScreen:", homeScreen); // Log the home screen element
+    console.log("threeButtonMenu:", threeButtonMenu); // Log the three-button menu element
+
+    if (!homeScreen || !threeButtonMenu) {
+        console.error("One or more required elements are missing in the DOM.");
+        return;
+    }
+
+    // Hide the home screen and show the three-button menu
+    homeScreen.classList.add('d-none');
+    threeButtonMenu.classList.remove('d-none');
+
+    console.log("homeScreen hidden, threeButtonMenu displayed"); // Confirm visibility toggling
 }
 
 // Reset the game state
@@ -37,17 +78,46 @@ function resetGame() {
 
 // Start the game based on the selected filter
 function startGame(filter) {
-    document.getElementById('home-page').classList.add('d-none');
+    console.log(`startGame triggered with filter: ${filter}`); // Debugging log
+
+    const threeButtonMenu = document.getElementById('three-button-menu');
+    const regionSelection = document.getElementById('region-selection');
+    const typeSelection = document.getElementById('type-selection');
+    const favoritePokemon = document.getElementById('favorite-pokemon');
+
+    console.log("threeButtonMenu:", threeButtonMenu);
+    console.log("regionSelection:", regionSelection);
+    console.log("typeSelection:", typeSelection);
+    console.log("favoritePokemon:", favoritePokemon);
+
+    if (!threeButtonMenu) {
+        console.error("threeButtonMenu is missing in the DOM.");
+        return;
+    }
+
+    threeButtonMenu.classList.add('d-none');
 
     if (filter === 'region') {
-        document.getElementById('region-selection').classList.remove('d-none');
+        if (!regionSelection) {
+            console.error("regionSelection is missing in the DOM.");
+            return;
+        }
+        regionSelection.classList.remove('d-none');
         populateRegionButtons();
     } else if (filter === 'type') {
-        document.getElementById('type-selection').classList.remove('d-none');
+        if (!typeSelection) {
+            console.error("typeSelection is missing in the DOM.");
+            return;
+        }
+        typeSelection.classList.remove('d-none');
         populateTypeButtons();
     } else {
+        if (!favoritePokemon) {
+            console.error("favoritePokemon is missing in the DOM.");
+            return;
+        }
         activeFilter = { type: 'all', value: null };
-        document.getElementById('favorite-pokemon').classList.remove('d-none');
+        favoritePokemon.classList.remove('d-none');
         startNewRound(Array.from({ length: totalPokemon }, (_, i) => i + 1).filter(id => id <= 1025));
     }
 }
@@ -131,25 +201,43 @@ function displayNextBatch() {
 
 // Display Pokémon cards
 async function displayPokemon(pokemonIds) {
+    console.log("displayPokemon triggered with IDs:", pokemonIds); // Debugging log
+
     const pokemonContainer = document.getElementById('pokemon-container');
+    if (!pokemonContainer) {
+        console.error("The 'pokemon-container' element is missing in the DOM.");
+        return;
+    }
+
     pokemonContainer.innerHTML = ''; // Clear previous Pokémon cards
 
-    for (const id of pokemonIds) {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        const data = await response.json();
+    try {
+        // Fetch all Pokémon data in parallel
+        const pokemonData = await Promise.all(
+            pokemonIds.map(async (id) => {
+                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+                return response.json();
+            })
+        );
 
-        // Create a card for each Pokémon
-        const card = document.createElement('div');
-        card.className = 'col-md-4 col-sm-6';
-        card.innerHTML = `
-            <div class="card shadow-sm" onclick="selectFavorite('${id}')">
-                <img src="${data.sprites.front_default}" class="card-img-top" alt="${data.name}">
-                <div class="card-body text-center">
-                    <h5 class="card-title text-capitalize">${data.name}</h5>
+        // Create and append cards for each Pokémon
+        pokemonData.forEach((data) => {
+            const card = document.createElement('div');
+            card.className = 'col-md-4 col-sm-6';
+            card.innerHTML = `
+                <div class="card shadow-sm" onclick="selectFavorite('${data.id}')">
+                    <img src="${data.sprites.front_default}" class="card-img-top" alt="${data.name}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-capitalize">${data.name}</h5>
+                    </div>
                 </div>
-            </div>
-        `;
-        pokemonContainer.appendChild(card);
+            `;
+            pokemonContainer.appendChild(card);
+        });
+
+        console.log("All Pokémon cards displayed successfully."); // Confirm success
+    } catch (error) {
+        console.error("Failed to fetch Pokémon data:", error);
     }
 }
 
@@ -161,19 +249,45 @@ function selectFavorite(selectedId) {
 
 // Display the final Pokémon
 async function displayFinalPokemon(pokemonId) {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
-    const data = await response.json();
+    console.log(`displayFinalPokemon triggered with pokemonId: ${pokemonId}`); // Debugging log
 
-    // Update the final Pokémon section
-    document.getElementById('final-message').textContent = `${data.name.charAt(0).toUpperCase() + data.name.slice(1)} is your favorite!`;
-    document.getElementById('final-pokemon-image').src = data.sprites.front_default;
+    const finalMessage = document.getElementById('final-message');
+    const finalPokemonImage = document.getElementById('final-pokemon-image');
+    const finalPokemonSection = document.getElementById('final-pokemon');
+    const homeScreen = document.getElementById('home-screen');
+    const favoritePokemon = document.getElementById('favorite-pokemon');
+    const regionSelection = document.getElementById('region-selection');
+    const typeSelection = document.getElementById('type-selection');
 
-    // Show the final Pokémon section and hide others
-    document.getElementById('home-page').classList.add('d-none');
-    document.getElementById('favorite-pokemon').classList.add('d-none');
-    document.getElementById('region-selection').classList.add('d-none');
-    document.getElementById('type-selection').classList.add('d-none');
-    document.getElementById('final-pokemon').classList.remove('d-none');
+    console.log("finalMessage:", finalMessage);
+    console.log("finalPokemonImage:", finalPokemonImage);
+    console.log("finalPokemonSection:", finalPokemonSection);
+
+    // Check if all required elements exist
+    if (!finalMessage || !finalPokemonImage || !finalPokemonSection) {
+        console.error("One or more required elements are missing in the DOM.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
+        const data = await response.json();
+
+        // Update the final Pokémon section
+        finalMessage.textContent = `${data.name.charAt(0).toUpperCase() + data.name.slice(1)} is your favorite Pokémon!`;
+        finalPokemonImage.src = data.sprites.front_default;
+
+        // Show the final Pokémon section and hide others
+        homeScreen.classList.add('d-none');
+        favoritePokemon.classList.add('d-none');
+        regionSelection.classList.add('d-none');
+        typeSelection.classList.add('d-none');
+        finalPokemonSection.classList.remove('d-none');
+
+        console.log("Final Pokémon displayed successfully."); // Confirm success
+    } catch (error) {
+        console.error("Failed to fetch Pokémon data:", error);
+    }
 }
 
 // Toggle night mode
