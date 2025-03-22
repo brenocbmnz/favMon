@@ -25,7 +25,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark shadow">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="#" onclick="goToHomePage()">
+            <a class="navbar-brand d-flex align-items-center" href="#" onclick="loadPage('home'); return false;">
                 <span class="fw-bold">favPoke</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -35,10 +35,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link fw-bold" href="about.html">About</a>
+                        <a class="nav-link fw-bold" href="#" onclick="loadPage('about'); return false;">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-bold" href="contact.html">Contact</a>
+                        <a class="nav-link fw-bold" href="#" onclick="loadPage('contact'); return false;">Contact</a>
                     </li>
                 </ul>
             </div>
@@ -48,21 +48,10 @@
         </div>
     </nav>
 
-    <!-- Home Screen -->
-    <section id="home-screen" class="py-5">
-        <div class="container text-center">
-            <h1 class="display-4 fw-bold">Welcome to favPoke!</h1>
-            <p class="lead">Discover your favorite Pokémon and explore the world of Pokémon like never before.</p>
-            <div class="mt-4 start-button">
-                <button onclick="goToSelectionScreen()">
-                    <span class="button_top">Start the Game</span>
-                </button>
-                <button class="ms-3" data-bs-toggle="modal" data-bs-target="#howItWorksModal">
-                    <span class="button_top">How it works</span>
-                </button>
-            </div>
-        </div>
-    </section>
+    <!-- Dynamic Content Container -->
+    <div id="content-container">
+        <!-- Content will be loaded here -->
+    </div>
 
     <!-- How it Works Modal -->
     <div class="modal fade" id="howItWorksModal" tabindex="-1" aria-labelledby="howItWorksModalLabel"

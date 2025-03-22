@@ -454,3 +454,63 @@ document.addEventListener('DOMContentLoaded', () => {
 function toggleDarkMode() {
     document.body.classList.toggle('dark');
 }
+
+// Function to dynamically load pages
+async function loadPage(pageName) {
+    const contentContainer = document.getElementById('content-container');
+    
+    try {
+        // Hide all game sections when navigating to different pages
+        const gameSections = [
+            'three-button-menu',
+            'favorite-pokemon',
+            'region-selection',
+            'type-selection',
+            'final-pokemon',
+            'loading-animation'
+        ];
+        
+        gameSections.forEach(sectionId => {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.add('d-none');
+            }
+        });
+
+        // Reset game state when navigating away from game
+        if (pageName !== 'home') {
+            resetGame();
+        }
+
+        const response = await fetch(`pages/${pageName}.html`);
+        if (!response.ok) {
+            throw new Error(`Failed to load page: ${pageName}`);
+        }
+        const content = await response.text();
+        contentContainer.innerHTML = content;
+
+        // Initialize any necessary scripts for the loaded page
+        if (pageName === 'home') {
+            goToHomePage();
+        }
+
+        // Update URL without page reload
+        history.pushState({ page: pageName }, '', `#${pageName}`);
+    } catch (error) {
+        console.error('Error loading page:', error);
+        contentContainer.innerHTML = '<p class="text-center text-danger">Error loading page content.</p>';
+    }
+}
+
+// Handle browser back/forward buttons
+window.addEventListener('popstate', (event) => {
+    if (event.state?.page) {
+        loadPage(event.state.page);
+    }
+});
+
+// Load home page by default
+document.addEventListener('DOMContentLoaded', () => {
+    const hash = window.location.hash.slice(1) || 'home';
+    loadPage(hash);
+});
