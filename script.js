@@ -419,14 +419,16 @@ async function displayFinalPokemon(pokemonId) {
 // Toggle night mode
 function toggleNightMode() {
     const body = document.body;
-    const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = document.getElementById('theme-icon');
 
     body.classList.toggle('night-mode');
-    themeToggle.checked = body.classList.contains('night-mode');
+    const isNightMode = body.classList.contains('night-mode');
+
+    // Save the mode in localStorage
+    localStorage.setItem('theme', isNightMode ? 'night' : 'light');
 
     // Update the icon based on the mode
-    if (body.classList.contains('night-mode')) {
+    if (isNightMode) {
         themeIcon.classList.remove('bi-brightness-high');
         themeIcon.classList.add('bi-moon-stars');
     } else {
@@ -435,11 +437,20 @@ function toggleNightMode() {
     }
 }
 
+// Apply the saved theme on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'night') {
+        document.body.classList.add('night-mode');
+        const themeIcon = document.getElementById('theme-icon');
+        if (themeIcon) {
+            themeIcon.classList.remove('bi-brightness-high');
+            themeIcon.classList.add('bi-moon-stars');
+        }
+    }
+    goToHomePage();
+});
+
 function toggleDarkMode() {
     document.body.classList.toggle('dark');
 }
-
-// Load the home page on page load
-document.addEventListener('DOMContentLoaded', () => {
-    goToHomePage();
-});
