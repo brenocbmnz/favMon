@@ -163,14 +163,25 @@ function populateRegionButtons() {
     });
 }
 
+// Utility function to fetch data with User-Agent header
+async function fetchWithUserAgent(url) {
+    const headers = {
+        'User-Agent': 'favPokeApp/1.0 (https://favpoke.com)'
+    };
+    const response = await fetch(url, { headers });
+    if (!response.ok) {
+        throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
+    }
+    return response.json();
+}
+
 // Populate type buttons
 async function populateTypeButtons() {
     const typeContainer = document.getElementById('type-container');
     typeContainer.innerHTML = ''; // Clear previous buttons
 
     try {
-        const response = await fetch('https://pokeapi.co/api/v2/type/');
-        const data = await response.json();
+        const data = await fetchWithUserAgent('https://pokeapi.co/api/v2/type/');
 
         // Filter out "stellar" and "unknown" types
         const filteredTypes = data.results.filter(
@@ -190,9 +201,8 @@ async function populateTypeButtons() {
                 activeFilter = { type: 'type', value: type.name };
                 document.getElementById('type-selection').classList.add('d-none');
                 document.getElementById('favorite-pokemon').classList.remove('d-none');
-                const response = await fetch(`https://pokeapi.co/api/v2/type/${type.name}`);
-                const data = await response.json();
-                const typePokemonIds = data.pokemon
+                const typeData = await fetchWithUserAgent(`https://pokeapi.co/api/v2/type/${type.name}`);
+                const typePokemonIds = typeData.pokemon
                     .map((p) => parseInt(p.pokemon.url.split('/').slice(-2, -1)[0]))
                     .filter((id) => id <= 1025); // Exclude Pokémon with IDs higher than 1025
                 startNewRound(typePokemonIds);
@@ -250,10 +260,7 @@ async function displayPokemon(pokemonIds) {
     try {
         // Fetch all Pokémon data in parallel
         const pokemonData = await Promise.all(
-            pokemonIds.map(async (id) => {
-                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-                return response.json();
-            })
+            pokemonIds.map(async (id) => fetchWithUserAgent(`https://pokeapi.co/api/v2/pokemon/${id}`))
         );
 
         // Create and append cards for each Pokémon
@@ -306,8 +313,7 @@ async function displayFinalPokemon(pokemonId) {
     }
 
     try {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
-        const data = await response.json();
+        const data = await fetchWithUserAgent(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
 
         // Update the final Pokémon section
         finalMessage.textContent = `${data.name.charAt(0).toUpperCase() + data.name.slice(1)} is your favorite Pokémon!`;
