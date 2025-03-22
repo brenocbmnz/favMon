@@ -154,19 +154,54 @@ body {
 /* Buttons */
 button {
     border-radius: 50px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    background-color: var(--accent-color);
-    color: var(--text-color);
+    transition: none;
+    background-color: unset;
+    color: unset;
     border: none;
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    cursor: pointer;
+    padding: unset;
+    font-size: unset;
+    cursor: unset;
 }
 
 button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    background-color: var(--hover-color);
+    transform: none;
+    box-shadow: none;
+    background-color: unset;
+}
+
+/* Fix for start buttons */
+button {
+    --button_radius: 0.75em;
+    --button_color: #e8e8e8;
+    --button_outline_color: #000000;
+    font-size: 17px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--button_radius);
+    background: var(--button_outline_color);
+    display: inline-block;
+    text-align: center;
+}
+
+.button_top {
+    display: block;
+    box-sizing: border-box;
+    border: 2px solid var(--button_outline_color);
+    border-radius: var(--button_radius);
+    padding: 0.75em 1.5em;
+    background: var(--button_color);
+    color: var(--button_outline_color);
+    transform: translateY(-0.2em);
+    transition: transform 0.1s ease;
+}
+
+button:hover .button_top {
+    transform: translateY(-0.33em); /* Pull the button upwards when hovered */
+}
+
+button:active .button_top {
+    transform: translateY(0); /* Push the button downwards when pressed */
 }
 
 /* Shared style for home page buttons */
@@ -481,6 +516,24 @@ h2,
 h3,
 .navbar-brand {
     font-family: 'Inter', sans-serif;
+}
+
+/* Loading Animation */
+#loading-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 2000;
+}
+
+/* Fix for animation container */
+#lottie-container {
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
 }
 
 /* Responsive Design */

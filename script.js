@@ -39,6 +39,20 @@ const typeColors = {
     fairy: '#D685AD',
 };
 
+// In-memory cache for Pokémon data
+const pokemonCache = {};
+
+// Utility function to fetch Pokémon data with caching
+async function fetchPokemonData(pokemonId) {
+    if (pokemonCache[pokemonId]) {
+        return pokemonCache[pokemonId]; // Return cached data if available
+    }
+
+    const data = await fetchWithUserAgent(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
+    pokemonCache[pokemonId] = data; // Cache the fetched data
+    return data;
+}
+
 // Navigate to the home page
 function goToHomePage() {
     console.log("goToHomePage triggered"); // Debugging log
@@ -140,7 +154,12 @@ function startGame(filter) {
         }
         activeFilter = { type: 'all', value: null };
         favoritePokemon.classList.remove('d-none');
-        startNewRound(Array.from({ length: totalPokemon }, (_, i) => i + 1).filter(id => id <= 1025));
+
+        // Shuffle all Pokémon IDs before starting the game
+        const allPokemonIds = shuffleArray(
+            Array.from({ length: totalPokemon }, (_, i) => i + 1).filter(id => id <= 1025)
+        );
+        startNewRound(allPokemonIds);
     }
 }
 
@@ -220,11 +239,76 @@ function shuffleArray(array) {
     return array.sort(() => Math.random() - 0.5);
 }
 
+// Initialize Lottie animation
+let lottieInstance;
+document.addEventListener('DOMContentLoaded', () => {
+    if (typeof bodymovin === 'undefined') {
+        console.error("Lottie library (bodymovin) is not loaded. Ensure the library is included in the HTML.");
+        return;
+    }
+
+    const lottieContainer = document.getElementById('lottie-container');
+    if (lottieContainer) {
+        lottieInstance = bodymovin.loadAnimation({
+            container: lottieContainer,
+            renderer: 'svg',
+            loop: true,
+            autoplay: false,
+            path: './assets/pokeball.json' // Ensure the path to pokeball.json is correct
+        });
+    } else {
+        console.error("Lottie container not found. Ensure #lottie-container exists in the DOM.");
+    }
+});
+
+// Show loading animation
+function showLoadingAnimation() {
+    const loadingAnimation = document.getElementById('loading-animation');
+    if (loadingAnimation && lottieInstance) {
+        loadingAnimation.classList.remove('d-none');
+        lottieInstance.play();
+    } else {
+        console.error("Loading animation or Lottie instance is not initialized.");
+    }
+}
+
+// Hide loading animation
+function hideLoadingAnimation() {
+    const loadingAnimation = document.getElementById('loading-animation');
+    if (loadingAnimation && lottieInstance) {
+        loadingAnimation.classList.add('d-none');
+        lottieInstance.stop();
+    } else {
+        console.error("Loading animation or Lottie instance is not initialized.");
+    }
+}
+
 // Start a new round with the given Pokémon IDs
 function startNewRound(pokemonIds) {
     remainingPokemonIds = shuffleArray([...pokemonIds.filter(id => id <= 1025)]); // Shuffle and ensure IDs > 1025 are excluded
     selectedPokemonIds = [];
+    cachePokemonData(remainingPokemonIds); // Preload data for all Pokémon in the current round
     displayNextBatch();
+}
+
+// Preload Pokémon data for the given IDs
+async function cachePokemonData(pokemonIds) {
+    showLoadingAnimation(); // Show loading animation
+    try {
+        await Promise.all(
+            pokemonIds.map(async (id) => {
+                if (!pokemonCache[id]) {
+                    const data = await fetchPokemonData(id); // Fetch and cache data
+                    console.log(`Cached data for Pokémon ID: ${id}`, data);
+                }
+            })
+        );
+        console.log("All Pokémon data cached successfully.");
+    } catch (error) {
+        console.error("Failed to cache Pokémon data:", error);
+    } finally {
+        hideLoadingAnimation(); // Hide loading animation
+    }
 }
 
 // Display the next batch of Pokémon
@@ -258,9 +342,9 @@ async function displayPokemon(pokemonIds) {
     pokemonContainer.innerHTML = ''; // Clear previous Pokémon cards
 
     try {
-        // Fetch all Pokémon data in parallel
+        // Fetch Pokémon data from cache or API
         const pokemonData = await Promise.all(
-            pokemonIds.map(async (id) => fetchWithUserAgent(`https://pokeapi.co/api/v2/pokemon/${id}`))
+            pokemonIds.map(async (id) => fetchPokemonData(id))
         );
 
         // Create and append cards for each Pokémon
@@ -313,7 +397,7 @@ async function displayFinalPokemon(pokemonId) {
     }
 
     try {
-        const data = await fetchWithUserAgent(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
+        const data = await fetchPokemonData(pokemonId); // Fetch data from cache or API
 
         // Update the final Pokémon section
         finalMessage.textContent = `${data.name.charAt(0).toUpperCase() + data.name.slice(1)} is your favorite Pokémon!`;
@@ -349,6 +433,10 @@ function toggleNightMode() {
         themeIcon.classList.remove('bi-moon-stars');
         themeIcon.classList.add('bi-brightness-high');
     }
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle('dark');
 }
 
 // Load the home page on page load
