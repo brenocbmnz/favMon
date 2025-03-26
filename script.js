@@ -3,6 +3,8 @@ let currentPokemonIds = []; // Store the current set of Pokémon IDs for progres
 let remainingPokemonIds = []; // Track Pokémon IDs that have not been processed in the current round
 let selectedPokemonIds = []; // Track Pokémon IDs selected in the current round
 let activeFilter = { type: null, value: null }; // Track the active filter (type: 'all', 'region', or 'type', value: region/type name)
+let pokemonCache = new Map();
+let loadingAnimation = null;
 
 // Define regions with ID ranges
 const regions = {
@@ -50,20 +52,18 @@ function goToHomePage() {
     const typeSelection = document.getElementById('type-selection');
     const finalPokemon = document.getElementById('final-pokemon');
 
-    console.log("homeScreen:", homeScreen); // Log the home screen element
-
     if (!homeScreen) {
-        console.error("homeScreen is missing in the DOM.");
-        return;
+        console.error("homeScreen is missing in the DOM. Ensure the 'home-screen' element exists.");
+        return; // Exit the function if the element is missing
     }
 
     // Show the home screen and hide other sections
     homeScreen.classList.remove('d-none');
-    threeButtonMenu.classList.add('d-none');
-    favoritePokemon.classList.add('d-none');
-    regionSelection.classList.add('d-none');
-    typeSelection.classList.add('d-none');
-    finalPokemon.classList.add('d-none');
+    threeButtonMenu?.classList.add('d-none');
+    favoritePokemon?.classList.add('d-none');
+    regionSelection?.classList.add('d-none');
+    typeSelection?.classList.add('d-none');
+    finalPokemon?.classList.add('d-none');
 
     resetGame();
 }
@@ -235,6 +235,30 @@ function displayNextBatch() {
     displayPokemon(currentPokemonIds);
 }
 
+// Add this function for loading animation
+function showLoadingScreen() {
+    const loadingElement = document.getElementById('loading-animation');
+    loadingElement.classList.remove('d-none');
+
+    if (!loadingAnimation) {
+        loadingAnimation = lottie.loadAnimation({
+            container: document.getElementById('lottie-container'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: './assets/pokeball.json'
+        });
+    }
+}
+
+function hideLoadingScreen() {
+    const loadingElement = document.getElementById('loading-animation');
+    loadingElement.classList.add('d-none');
+    if (loadingAnimation) {
+        loadingAnimation.stop();
+    }
+}
+
 // Display Pokémon cards
 async function displayPokemon(pokemonIds) {
     console.log("displayPokemon triggered with IDs:", pokemonIds); // Debugging log
@@ -246,15 +270,26 @@ async function displayPokemon(pokemonIds) {
     }
 
     pokemonContainer.innerHTML = ''; // Clear previous Pokémon cards
+    showLoadingScreen();
 
     try {
         // Fetch all Pokémon data in parallel
         const pokemonData = await Promise.all(
             pokemonIds.map(async (id) => {
+                // Check cache first
+                if (pokemonCache.has(id)) {
+                    return pokemonCache.get(id);
+                }
+
                 const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-                return response.json();
+                const data = await response.json();
+                // Store in cache
+                pokemonCache.set(id, data);
+                return data;
             })
         );
+
+        hideLoadingScreen();
 
         // Create and append cards for each Pokémon
         pokemonData.forEach((data) => {
@@ -274,6 +309,7 @@ async function displayPokemon(pokemonIds) {
         console.log("All Pokémon cards displayed successfully."); // Confirm success
     } catch (error) {
         console.error("Failed to fetch Pokémon data:", error);
+        hideLoadingScreen();
     }
 }
 
@@ -306,8 +342,14 @@ async function displayFinalPokemon(pokemonId) {
     }
 
     try {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
-        const data = await response.json();
+        let data;
+        if (pokemonCache.has(pokemonId)) {
+            data = pokemonCache.get(pokemonId);
+        } else {
+            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
+            data = await response.json();
+            pokemonCache.set(pokemonId, data);
+        }
 
         // Update the final Pokémon section
         finalMessage.textContent = `${data.name.charAt(0).toUpperCase() + data.name.slice(1)} is your favorite Pokémon!`;
@@ -347,8 +389,37 @@ function toggleNightMode() {
     localStorage.setItem('nightMode', isNightMode);
 }
 
-// Apply the saved night mode preference on page load
+// Add this new function to handle page loading
+async function loadPage(page) {
+    const contentContainer = document.getElementById('content-container');
+    if (!contentContainer) {
+        console.error('Content container not found');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/pages/${page}.html`);
+        if (!response.ok) {
+            throw new Error(`Failed to load ${page}`);
+        }
+        const content = await response.text();
+        contentContainer.innerHTML = content;
+
+        // If loading home page, ensure home screen is visible
+        if (page === 'home') {
+            const homeScreen = document.getElementById('home-screen');
+            if (homeScreen) {
+                homeScreen.classList.remove('d-none');
+            }
+        }
+    } catch (error) {
+        console.error('Error loading page:', error);
+    }
+}
+
+// Update the event listener to use loadPage
 document.addEventListener('DOMContentLoaded', () => {
+    // Night mode initialization
     const isNightMode = localStorage.getItem('nightMode') === 'true';
     const body = document.body;
     const themeIcon = document.getElementById('theme-icon');
@@ -359,13 +430,8 @@ document.addEventListener('DOMContentLoaded', () => {
             themeIcon.classList.remove('bi-brightness-high');
             themeIcon.classList.add('bi-moon-stars');
         }
-    } else {
-        body.classList.remove('night-mode');
-        if (themeIcon) {
-            themeIcon.classList.remove('bi-moon-stars');
-            themeIcon.classList.add('bi-brightness-high');
-        }
     }
 
-    goToHomePage();
+    // Load the homepage content
+    loadPage('home');
 });
