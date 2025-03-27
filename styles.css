@@ -72,6 +72,11 @@ body.night-mode .btn-dark .bi-github {
     padding: 0 !important;
 }
 
+/* Make loading time message white in dark mode */
+body.night-mode .text-muted {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
 /* General Styles */
 body {
     font-family: 'Roboto', sans-serif;
@@ -339,11 +344,32 @@ body.night-mode .btn-theme:hover {
 }
 
 .home-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
     gap: 30px;
     margin: 2rem 0;
+    justify-items: center;
+}
+
+.button-container.random-btn {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.button-container.all-btn {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.button-container.region-btn {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.button-container.type-btn {
+    grid-column: 1;
+    grid-row: 2;
 }
 
 .button-container {
@@ -383,6 +409,10 @@ body.night-mode .btn-theme:hover {
     background-image: url('./assets/eevee.png');
 }
 
+.home-buttons .btn-random {
+    background-image: url('./assets/pokecoin.png');
+}
+
 .home-buttons .btn:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
@@ -398,6 +428,11 @@ body.night-mode .home-buttons .btn:hover {
     background-color: #621EFA;
 }
 
+/* Remove this block to use the default dark mode color */
+/* body.night-mode .home-buttons .btn-random {
+    background-color: #9B59B6;
+} */
+
 .button-container p {
     margin-top: 10px;
     font-size: 1rem;
@@ -412,7 +447,8 @@ body.night-mode .home-buttons .btn:hover {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     background-color: var(--secondary-color);
     color: var(--text-color);
-    width: 180px;
+    width: 100%;
+    /* Changed from fixed width to 100% */
     height: 250px;
     margin: 1rem auto;
     margin-bottom: 1rem;
@@ -895,4 +931,25 @@ body.night-mode .modal .btn-close {
 
 body.night-mode .modal ul {
     color: var(--text-color) !important;
+}
+
+#pokemon-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Always show 3 columns on large screens */
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    #pokemon-container {
+        grid-template-columns: repeat(2, 1fr);
+        /* Force 2 columns on small screens */
+        gap: 0.5rem;
+    }
+
+    .card {
+        height: 200px;
+    }
 }

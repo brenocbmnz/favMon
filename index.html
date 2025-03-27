@@ -75,11 +75,13 @@
                 <div class="modal-body">
                     <p>Welcome to favPoke! Here's how you can use the app:</p>
                     <ul>
-                        <li>Click "Start the Game" to begin discovering your favorite Pokémon.</li>
-                        <li>Choose a path: "All Pokémon," "By Region," or "By Type."</li>
-                        <li>Select your favorite Pokémon from the displayed options.</li>
+                        <li>Click "Find your favorite" to begin.</li>
+                        <li>Choose one of the options: "Random 60", "By Region", "By Type." or "All Pokémon". Each
+                            option will
+                            display the respective pokemon. Random 60 will display sixty Pokémon at random.</li>
+                        <li>Select your favorite Pokémon from the displayed options. After going through all pokemon,
+                            the game will display the Pokemon you picked</li>
                         <li>Continue selecting until only one Pokémon remains – your favorite!</li>
-                        <li>Save your favorite Pokémon to the list for future reference.</li>
                     </ul>
                 </div>
                 <div class="modal-footer">
@@ -91,21 +93,36 @@
 
     <section id="three-button-menu" class="py-5 d-none">
         <div class="container text-center">
-            <h2 class="mb-4 fw-bold">Choose Your Path</h2>
+            <h2 class="mb-4 fw-bold">Choose your Path!</h2>
             <div class="home-buttons mt-4">
-                <div class="button-container">
-                    <button class="btn btn-theme shadow btn-all" onclick="startGame('all')"></button>
-                    <p>All Pokémon</p>
+                <div class="button-container random-btn">
+                    <button class="btn btn-theme shadow btn-random" onclick="startGame('random')"
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="Quick game with 60 random Pokémon!"></button>
+                    <p>Random 60</p>
                 </div>
-                <div class="button-container">
-                    <button class="btn btn-theme shadow btn-region" onclick="startGame('region')"></button>
-                    <p>By Region</p>
-                </div>
-                <div class="button-container">
-                    <button class="btn btn-theme shadow btn-type" onclick="startGame('type')"></button>
+                <div class="button-container type-btn">
+                    <button class="btn btn-theme shadow btn-type" onclick="startGame('type')" data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Choose Pokémon by their type (Fire, Water, Grass, etc.)"></button>
                     <p>By Type</p>
                 </div>
+                <div class="button-container region-btn">
+                    <button class="btn btn-theme shadow btn-region" onclick="startGame('region')"
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="Choose Pokémon from specific regions (Kanto, Johto, Hoenn, etc.)"></button>
+                    <p>By Region</p>
+                </div>
+                <div class="button-container all-btn">
+                    <button class="btn btn-theme shadow btn-all" onclick="startGame('all')" data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Play with all available Pokémon (1025 in total). Loading times might be long!"></button>
+                    <p>All Pokémon</p>
+                </div>
             </div>
+            <p class="mt-4 text-muted">Loading times will vary depending on the option chosen. The more Pokemon to
+                choose from, the longer the loading time. If in doubt, Random 60 will randomize sixty Pokémon you can
+                choose from!</p>
         </div>
     </section>
 

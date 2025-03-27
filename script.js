@@ -336,7 +336,6 @@ async function displayPokemon(pokemonIds) {
 
         pokemonData.forEach((data) => {
             const card = document.createElement('div');
-            card.className = 'col-md-4 col-sm-6';
             card.innerHTML = `
                 <div class="card shadow-sm" onclick="selectFavorite('${data.id}')">
                     <img src="${data.sprites.front_default}" class="card-img-top" alt="${data.name}">
@@ -481,6 +480,13 @@ async function loadPage(page) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Existing code...
     const isNightMode = localStorage.getItem('nightMode') === 'true';
     const body = document.body;
     const themeIcon = document.getElementById('theme-icon');
@@ -580,6 +586,23 @@ function startGame(filter) {
         }
         typeSelection.classList.remove('d-none');
         populateTypeButtons();
+    } else if (filter === 'random') {
+        if (!favoritePokemon) {
+            console.error("favoritePokemon is missing in the DOM");
+            return;
+        }
+        activeFilter = { type: 'random', value: null };
+        const allPokemonIds = Array.from({ length: totalPokemon }, (_, i) => i + 1)
+            .filter(id => id <= 1025);
+        const shuffled = shuffleArray([...allPokemonIds]);
+        const randomSelection = shuffled.slice(0, 60);
+
+        preloadPokemonData(randomSelection).then(success => {
+            if (success) {
+                favoritePokemon.classList.remove('d-none');
+                startNewRound(randomSelection);
+            }
+        });
     } else {
         if (!favoritePokemon) {
             console.error("favoritePokemon is missing in the DOM");
