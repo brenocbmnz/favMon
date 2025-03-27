@@ -795,6 +795,12 @@ h3,
     z-index: 2000;
 }
 
+/* Add dark mode loading screen background */
+body.night-mode #loading-animation {
+    background-color: rgba(37, 35, 39, 0.9);
+    /* Dark gray background with slight transparency */
+}
+
 /* Fix for animation container */
 #lottie-container {
     width: 300px;
@@ -998,6 +1004,14 @@ body.night-mode .accordion-collapse {
 /* Final Pokémon Section Styles */
 #final-pokemon {
     padding: 2rem 0;
+}
+
+/* Dark mode flavor text override */
+body.night-mode #final-flavor-text {
+    color: #FFFFFF !important;
+    /* Override Bootstrap's text-muted class */
+    opacity: 0.9;
+    /* Keep some subtle contrast while maintaining readability */
 }
 
 #final-pokemon img {

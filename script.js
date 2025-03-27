@@ -4,6 +4,8 @@ let remainingPokemonIds = []; // Track Pokémon IDs that have not been processed
 let selectedPokemonIds = []; // Track Pokémon IDs selected in the current round
 let activeFilter = { type: null, value: null }; // Track the active filter (type: 'all', 'region', or 'type', value: region/type name)
 let pokemonCache = new Map();
+let typesCache = null; // Add new cache for types
+let speciesCache = new Map(); // Add new cache for species data
 let loadingAnimation = null;
 
 // Define regions with ID ranges
@@ -206,28 +208,37 @@ function populateRegionButtons() {
     });
 }
 
-// Populate type buttons
+// Modify the populate type buttons function
 async function populateTypeButtons() {
     const typeContainer = document.getElementById('type-container');
-    typeContainer.innerHTML = ''; // Clear previous buttons
+    typeContainer.innerHTML = '';
 
     try {
-        const response = await fetch('https://pokeapi.co/api/v2/type/');
-        const data = await response.json();
+        // Check if types are cached in localStorage
+        const cachedTypes = localStorage.getItem('pokemonTypes');
+        if (cachedTypes) {
+            typesCache = JSON.parse(cachedTypes);
+        }
 
-        // Filter out "stellar" and "unknown" types
-        const filteredTypes = data.results.filter(
-            (type) => type.name !== 'unknown' && type.name !== 'stellar'
-        );
+        // If no cache, fetch from API
+        if (!typesCache) {
+            const response = await fetch('https://pokeapi.co/api/v2/type/');
+            const data = await response.json();
+            // Filter out "stellar" and "unknown" types
+            typesCache = data.results.filter(
+                (type) => type.name !== 'unknown' && type.name !== 'stellar'
+            );
+            // Store in localStorage
+            localStorage.setItem('pokemonTypes', JSON.stringify(typesCache));
+        }
 
-        filteredTypes.forEach((type) => {
+        // Create buttons for each type
+        typesCache.forEach((type) => {
             const button = document.createElement('button');
-            button.className = 'btn mb-3'; // Base button styles
+            button.className = 'btn mb-3';
             button.textContent = type.name.charAt(0).toUpperCase() + type.name.slice(1);
-
-            // Set the background color based on the type
-            button.style.backgroundColor = typeColors[type.name] || '#CCCCCC'; // Default color if type not found
-            button.style.color = '#FFFFFF'; // Ensure text is readable
+            button.style.backgroundColor = typeColors[type.name] || '#CCCCCC';
+            button.style.color = '#FFFFFF';
 
             button.onclick = async () => {
                 activeFilter = { type: 'type', value: type.name };
@@ -237,7 +248,6 @@ async function populateTypeButtons() {
                     .map((p) => parseInt(p.pokemon.url.split('/').slice(-2, -1)[0]))
                     .filter((id) => id <= 1025);
 
-                // Preload type Pokémon data before starting
                 const success = await preloadPokemonData(typePokemonIds);
                 if (success) {
                     document.getElementById('type-selection').classList.add('d-none');
@@ -385,6 +395,7 @@ async function displayFinalPokemon(pokemonId) {
     const finalMessage = document.getElementById('final-message');
     const finalPokemonImage = document.getElementById('final-pokemon-image');
     const finalPokemonSection = document.getElementById('final-pokemon');
+    const finalFlavorText = document.getElementById('final-flavor-text');
     const homeScreen = document.getElementById('home-screen');
     const favoritePokemon = document.getElementById('favorite-pokemon');
     const regionSelection = document.getElementById('region-selection');
@@ -395,7 +406,7 @@ async function displayFinalPokemon(pokemonId) {
     console.log("finalPokemonSection:", finalPokemonSection);
 
     // Check if all required elements exist
-    if (!finalMessage || !finalPokemonImage || !finalPokemonSection) {
+    if (!finalMessage || !finalPokemonImage || !finalPokemonSection || !finalFlavorText) {
         console.error("One or more required elements are missing in the DOM.");
         return;
     }
@@ -410,9 +421,34 @@ async function displayFinalPokemon(pokemonId) {
             pokemonCache.set(pokemonId, data);
         }
 
+        // Check species cache first
+        let speciesData;
+        const speciesUrl = data.species.url;
+        if (speciesCache.has(speciesUrl)) {
+            speciesData = speciesCache.get(speciesUrl);
+        } else {
+            const speciesResponse = await fetch(speciesUrl);
+            speciesData = await speciesResponse.json();
+            speciesCache.set(speciesUrl, speciesData);
+            // Also store in localStorage for persistence
+            try {
+                const storedSpecies = JSON.parse(localStorage.getItem('pokemonSpecies') || '{}');
+                storedSpecies[speciesUrl] = speciesData;
+                localStorage.setItem('pokemonSpecies', JSON.stringify(storedSpecies));
+            } catch (e) {
+                console.warn('Failed to store species data in localStorage:', e);
+            }
+        }
+
+        // Find English flavor text
+        const englishFlavorText = speciesData.flavor_text_entries.find(
+            entry => entry.language.name === "en"
+        );
+
         // Update the final Pokémon section
         finalMessage.textContent = `${data.name.charAt(0).toUpperCase() + data.name.slice(1)} is your favorite Pokémon!`;
         finalPokemonImage.src = data.sprites.front_default;
+        finalFlavorText.textContent = englishFlavorText ? englishFlavorText.flavor_text.replace(/\f/g, ' ') : '';
 
         // Show the final Pokémon section and hide others
         homeScreen.classList.add('d-none');
@@ -494,6 +530,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load the homepage content
     loadPage('home');
+
+    // Load cached types if available
+    const cachedTypes = localStorage.getItem('pokemonTypes');
+    if (cachedTypes) {
+        typesCache = JSON.parse(cachedTypes);
+    }
+
+    // Load cached species data if available
+    try {
+        const cachedSpecies = localStorage.getItem('pokemonSpecies');
+        if (cachedSpecies) {
+            const speciesData = JSON.parse(cachedSpecies);
+            Object.entries(speciesData).forEach(([url, data]) => {
+                speciesCache.set(url, data);
+            });
+        }
+    } catch (e) {
+        console.warn('Failed to load cached species data:', e);
+    }
 });
 
 // Add this helper function after resetGame()
