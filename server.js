@@ -6,13 +6,9 @@ const app = express();
 const PORT = 3000;
 const favFilePath = path.join(__dirname, 'fav.json');
 
-// Middleware to parse JSON
 app.use(express.json());
-
-// Serve static files (e.g., index.html)
 app.use(express.static(path.join(__dirname)));
 
-// Endpoint to get the current favorite Pokémon
 app.get('/favorites', (req, res) => {
     if (fs.existsSync(favFilePath)) {
         const data = fs.readFileSync(favFilePath, 'utf-8');
@@ -22,7 +18,6 @@ app.get('/favorites', (req, res) => {
     }
 });
 
-// Endpoint to add a Pokémon to the favorites
 app.post('/favorites', (req, res) => {
     const { pokemonId } = req.body;
     if (!pokemonId) {
@@ -42,7 +37,6 @@ app.post('/favorites', (req, res) => {
     res.json({ success: true, favorites });
 });
 
-// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

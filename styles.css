@@ -1,19 +1,11 @@
-/* Define color variables */
 :root {
     --primary-color: #FA7070;
-    /* Main theme color */
     --secondary-color: #A1C398;
-    /* Secondary theme color */
     --accent-color: #C6EBC5;
-    /* Accent color */
     --text-color: #1d1e20;
-    /* Main text color */
     --background-color: #F5F7F8;
-    /* Background color */
     --hover-color: #FF4545;
-    /* Hover color */
     --card-border-color: #FA7070;
-    /* Card border color */
 }
 
 /* Night mode variables */
@@ -22,29 +14,22 @@ body.night-mode {
     --secondary-color: #4B4376;
     --accent-color: #AE445A;
     --background-color: #252327;
-    /* Updated background color */
     --text-color: #F8FAFC;
     --hover-color: #CD8B7C;
     background-color: #252327;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%236ac4f4' fill-opacity='0.15'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     background-repeat: repeat;
-    /* Repeat the background pattern */
     background-attachment: fixed;
-    /* Keep the background fixed */
 }
 
 body.night-mode a {
     color: #1E67FA;
-    /* Match the hover color for links in dark mode */
     text-decoration: none;
-    /* Remove underline for consistency */
 }
 
 body.night-mode a:hover {
     color: #1E67FA;
-    /* Ensure hover color remains the same */
     text-decoration: underline;
-    /* Add underline on hover for emphasis */
 }
 
 body.night-mode .btn-dark,
@@ -52,7 +37,6 @@ body.night-mode .btn-primary,
 body.night-mode .btn-secondary,
 body.night-mode .btn-danger {
     color: #FFFFFF;
-    /* Set font color to white in dark mode */
 }
 
 body.night-mode .btn-dark:hover,
@@ -60,38 +44,29 @@ body.night-mode .btn-primary:hover,
 body.night-mode .btn-secondary:hover,
 body.night-mode .btn-danger:hover {
     text-decoration: none;
-    /* Remove underline on hover */
     color: #FFFFFF;
-    /* Ensure text remains white on hover */
 }
 
 body.night-mode .btn-dark .bi-github {
     border: 1px solid #FFFFFF;
-    /* Add a thin white border */
     border-radius: 50%;
-    /* Make the border circular */
     padding: 2px;
-    /* Add some padding inside the border */
 }
 
 body.night-mode .btn-dark {
     border: 1px solid #FFFFFF;
-    /* Add a thin white border around the button */
 }
 
-/* Remove border around GitHub icon */
 .btn-dark .bi-github {
     border: none;
 }
 
-/* Remove all spacing and borders from GitHub icon */
 .btn.btn-dark .bi-github {
     border: none !important;
     margin: 0 !important;
     padding: 0 !important;
 }
 
-/* Override dark mode styles to ensure no borders */
 body.night-mode .btn-dark .bi-github {
     border: none !important;
     padding: 0 !important;
@@ -103,9 +78,7 @@ body {
     background-color: #eeeeee;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23fa4e32' fill-opacity='0.25'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     background-repeat: repeat;
-    /* Repeat the background pattern */
     background-attachment: fixed;
-    /* Keep the background fixed */
     color: var(--text-color);
     margin: 0;
     padding: 0;
@@ -123,9 +96,7 @@ body::after {
     background-size: contain;
     background-repeat: no-repeat;
     pointer-events: none;
-    /* Ensure it doesn't interfere with interactions */
     z-index: 1;
-    /* Place it above the background but below other content */
 }
 
 body.night-mode::after {
@@ -139,10 +110,8 @@ body {
     flex-direction: column;
 }
 
-/* Navbar */
 .navbar {
     background-color: #FA2F47;
-    /* Updated header background color */
     padding: 0.5rem 1rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: sticky;
@@ -152,7 +121,6 @@ body {
 
 body.night-mode .navbar {
     background-color: #374045;
-    /* Ensure dark mode header background color remains unchanged */
 }
 
 .navbar .navbar-brand {
@@ -162,12 +130,9 @@ body.night-mode .navbar {
     font-family: 'Bangers', cursive;
 }
 
-/* Navbar Brand Hover Effect */
 .navbar .navbar-brand:hover {
     color: #1E67FA;
-    /* Hover color for the "favPoke" link */
     text-decoration: none;
-    /* Remove underline on hover */
 }
 
 .navbar .nav-link {
@@ -178,7 +143,6 @@ body.night-mode .navbar {
     transition: color 0.3s ease;
 }
 
-/* Center navbar links vertically */
 .navbar .navbar-nav .nav-link {
     display: flex;
     align-items: center;
@@ -188,7 +152,6 @@ body.night-mode .navbar {
 
 .navbar .nav-link:hover {
     color: #1E67FA;
-    /* Updated hover color for navbar text */
 }
 
 .navbar .form-check-label {
@@ -196,23 +159,16 @@ body.night-mode .navbar {
     color: var(--text-color);
 }
 
-/* Increase the size of the Night Mode toggle icons */
 #theme-icon {
     font-size: 1.5rem;
-    /* Adjust the size as needed */
 }
 
-/* Theme Toggle Icon Hover Effect */
 #theme-icon:hover {
     color: #1E67FA;
-    /* Hover color for the theme toggle icon */
     transform: scale(1.2);
-    /* Slightly enlarge the icon on hover */
     transition: transform 0.2s ease, color 0.2s ease;
-    /* Smooth transition */
 }
 
-/* Ensure the theme toggle icon aligns with the navbar links */
 .navbar .nav-link i#theme-icon {
     font-size: 1.5rem;
     display: inline-flex;
@@ -220,61 +176,46 @@ body.night-mode .navbar {
     justify-content: center;
 }
 
-/* Ensure the home screen is visible initially */
 #home-screen {
     display: block;
 }
 
-/* Center the Night Mode toggle vertically in the navbar */
 .form-check.form-switch {
     display: flex;
     align-items: center;
     height: 100%;
-    /* Ensure it aligns with the navbar height */
 }
 
-/* Center the icon and move it slightly to the right of the toggle */
 .form-check-label {
     display: flex;
     align-items: center;
     margin-left: 0.5rem;
-    /* Move the icon slightly to the right */
 }
 
-/* Light Theme Link Hover Effect */
 body:not(.night-mode) .nav-link:hover {
     color: #EAD196;
-    /* Updated hover color for links in light theme */
 }
 
-/* Light Theme Hover Effects */
 body:not(.night-mode) .navbar .navbar-brand:hover {
     color: #EAD196;
-    /* Light theme hover color for "favPoke" link */
 }
 
 body:not(.night-mode) #theme-icon:hover {
     color: #EAD196;
-    /* Light theme hover color for theme toggle icon */
 }
 
-/* Dark Theme Hover Effects */
 body.night-mode .navbar .navbar-brand:hover {
     color: #1E67FA;
-    /* Dark theme hover color for "favPoke" link */
 }
 
 body.night-mode #theme-icon:hover {
     color: #1E67FA;
-    /* Dark theme hover color for theme toggle icon */
 }
 
 body.night-mode .navbar .nav-link:hover {
     text-decoration: none;
-    /* Remove underline on hover in dark mode */
 }
 
-/* Hero Section */
 .hero {
     background: linear-gradient(to bottom, var(--background-color), var(--secondary-color));
     padding: 3rem 0;
@@ -295,7 +236,6 @@ body.night-mode .navbar .nav-link:hover {
     color: var(--text-color);
 }
 
-/* Home Screen Styles */
 .home-screen {
     background-color: var(--background-color);
     color: var(--text-color);
@@ -321,7 +261,6 @@ body.night-mode .navbar .nav-link:hover {
     padding: 0.8rem 2rem;
 }
 
-/* Buttons */
 button {
     border-radius: 50px;
     transition: none;
@@ -339,7 +278,6 @@ button:hover {
     background-color: unset;
 }
 
-/* Fix for start buttons */
 button {
     --button_radius: 0.75em;
     --button_color: #e8e8e8;
@@ -368,15 +306,12 @@ button {
 
 button:hover .button_top {
     transform: translateY(-0.33em);
-    /* Pull the button upwards when hovered */
 }
 
 button:active .button_top {
     transform: translateY(0);
-    /* Push the button downwards when pressed */
 }
 
-/* Shared style for home page buttons */
 .btn-theme {
     background-color: var(--primary-color);
     color: var(--text-color);
@@ -396,23 +331,18 @@ button:active .button_top {
 
 body.night-mode .btn-theme {
     background-color: #7A929F;
-    /* Updated dark mode button background color */
     color: var(--text-color);
-    /* Ensure text color remains readable */
 }
 
 body.night-mode .btn-theme:hover {
     background-color: #621EFA;
-    /* Updated dark mode button hover color */
 }
 
-/* Home Page Buttons */
 .home-buttons {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 30px;
-    /* Increased gap between buttons */
     margin: 2rem 0;
 }
 
@@ -421,7 +351,6 @@ body.night-mode .btn-theme:hover {
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    /* Space between button and text */
 }
 
 .home-buttons .btn {
@@ -438,22 +367,18 @@ body.night-mode .btn-theme:hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background-color: var(--primary-color);
     background-size: 50%;
-    /* Adjust icon size */
     background-repeat: no-repeat;
     background-position: center;
 }
 
-/* Icon for "All Pokémon" button */
 .home-buttons .btn-all {
     background-image: url('./assets/insignia.png');
 }
 
-/* Icon for "By Region" button */
 .home-buttons .btn-region {
     background-image: url('./assets/game.png');
 }
 
-/* Icon for "By Type" button */
 .home-buttons .btn-type {
     background-image: url('./assets/eevee.png');
 }
@@ -462,29 +387,23 @@ body.night-mode .btn-theme:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
     background-color: var(--hover-color);
-    /* Hover effect */
 }
 
 body.night-mode .home-buttons .btn {
     background-color: #7A929F;
-    /* Updated dark mode background color */
     color: var(--text-color);
-    /* Ensure text color remains readable */
 }
 
 body.night-mode .home-buttons .btn:hover {
     background-color: #621EFA;
-    /* Updated dark mode hover color */
 }
 
 .button-container p {
     margin-top: 10px;
     font-size: 1rem;
     color: var(--text-color);
-    text-align: center;
 }
 
-/* Pokémon Cards */
 .card {
     cursor: pointer;
     border: 1px solid var(--card-border-color);
@@ -497,16 +416,12 @@ body.night-mode .home-buttons .btn:hover {
     height: 250px;
     margin: 1rem auto;
     margin-bottom: 1rem;
-    /* Restore original margin at the bottom of the card */
     padding-bottom: 1rem;
-    /* Restore original padding at the bottom of the card */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* Center content vertically */
     text-align: center;
-    /* Center text */
 }
 
 .card:hover {
@@ -519,45 +434,32 @@ body.night-mode .home-buttons .btn:hover {
     height: 120px;
     object-fit: contain;
     width: auto;
-    /* Ensure the image scales proportionally */
     border-bottom: none;
-    /* Remove the line in the middle of the card */
     margin-bottom: 0.5rem;
-    /* Add spacing between the image and the name */
 }
 
 .card .card-body {
     padding: 1rem;
     text-align: center;
     margin-bottom: 1rem;
-    /* Restore original margin at the bottom of the card body */
     padding-bottom: 1rem;
-    /* Restore original padding at the bottom of the card body */
 }
 
 body.night-mode .card {
     background-color: #5D638E;
-    /* Updated dark theme card background color */
     color: var(--text-color);
-    /* Ensure text color remains readable */
     border-color: #6AC4F4;
-    /* Updated border color for dark mode */
 }
 
 body.night-mode .card:hover {
     background-color: #621EFA;
-    /* Updated dark mode hover color */
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-    /* Add hover shadow effect */
 }
 
-/* Add this after the card styles */
 body.night-mode #final-message {
     color: var(--text-color);
-    /* Use the theme text color variable */
 }
 
-/* Add this after the dark mode card styles */
 body.night-mode #final-pokemon .btn {
     color: var(--text-color);
     background-color: #7A929F;
@@ -576,7 +478,6 @@ body.night-mode #final-pokemon .btn:hover {
     background-color: var(--hover-color);
 }
 
-/* Filter Menu Buttons */
 .filter-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -612,15 +513,21 @@ body.night-mode #final-pokemon .btn:hover {
     background-color: var(--secondary-color);
 }
 
-/* Type Menu Styles */
 #type-container {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    /* Limit to 6 columns */
     gap: 20px;
-    /* Space between buttons */
     justify-content: center;
     margin: 2rem 0;
+}
+
+@media (max-width: 1100px) {
+    #type-container {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        max-width: 800px;
+        margin: 2rem auto;
+    }
 }
 
 #type-container .btn {
@@ -628,7 +535,7 @@ body.night-mode #final-pokemon .btn:hover {
     padding: 0.8rem;
     font-size: 1rem;
     border-radius: 10px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     background-color: var(--primary-color);
     color: var(--text-color);
     border: none;
@@ -639,81 +546,59 @@ body.night-mode #final-pokemon .btn:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     background-color: var(--hover-color);
+    color: #FFFFFF;
 }
 
-/* Remove centering for the Type Menu */
 #type-selection {
     min-height: auto;
-    /* Reset height */
     text-align: left;
-    /* Reset text alignment */
 }
 
-/* Region Menu Styles */
 #region-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    /* Three columns */
     gap: 25px;
-    /* Space between rows and columns */
     justify-content: center;
     justify-items: center;
     align-items: center;
     margin: 2rem auto;
     max-width: 800px;
-    /* Adjust container width for three items per row */
 }
 
 #region-container .btn {
     width: 140px;
-    /* Increase button width */
     height: 140px;
-    /* Increase button height */
     border: 2px solid var(--primary-color);
-    /* Border size */
     border-radius: 10px;
-    /* Slightly rounded corners */
     background-color: transparent;
-    /* Transparent background */
     background-size: 90%;
-    /* Increase icon size */
     background-repeat: no-repeat;
     background-position: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     cursor: pointer;
     padding: 0;
-    /* Remove padding */
 }
 
 #region-container .btn:hover {
     transform: scale(1.1);
-    /* Slightly enlarge on hover */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     background-color: var(--hover-color);
-    /* Hover background color */
 }
 
 body.night-mode #region-container .btn {
     background-color: #7A929F;
-    /* Updated dark mode background color */
     color: var (--text-color);
-    /* Ensure text color remains readable */
 }
 
 body.night-mode #region-container .btn:hover {
     background-color: #621EFA;
-    /* Updated dark mode hover color */
 }
 
-/* Center a single button in the last row */
 #region-container> :nth-child(3n + 1):last-child {
     grid-column: span 3;
-    /* Make the last button span three columns */
     justify-self: center;
-    /* Center the button horizontally */
 }
 
-/* Specific icons for each region button */
 #region-container .btn-kanto {
     background-image: url('./assets/kanto.svg');
 }
@@ -750,15 +635,11 @@ body.night-mode #region-container .btn:hover {
     background-image: url('./assets/paldea.svg');
 }
 
-/* Remove centering for the Region Menu */
 #region-selection {
     min-height: auto;
-    /* Reset height */
     text-align: left;
-    /* Reset text alignment */
 }
 
-/* Footer */
 .footer {
     background-color: var(--primary-color);
     color: var(--text-color);
@@ -767,7 +648,6 @@ body.night-mode #region-container .btn:hover {
     font-size: 0.9rem;
     margin-top: auto;
     padding-top: 80px;
-    /* Add extra padding to accommodate the pokeball image */
 }
 
 .footer p {
@@ -776,7 +656,6 @@ body.night-mode #region-container .btn:hover {
     font-family: 'Inter', sans-serif;
 }
 
-/* Apply Bangers font to headings */
 h1,
 h2,
 h3,
@@ -784,7 +663,6 @@ h3,
     font-family: 'Inter', sans-serif;
 }
 
-/* Loading Animation */
 #loading-animation {
     position: fixed;
     top: 0;
@@ -795,20 +673,16 @@ h3,
     z-index: 2000;
 }
 
-/* Add dark mode loading screen background */
 body.night-mode #loading-animation {
     background-color: rgba(37, 35, 39, 0.9);
-    /* Dark gray background with slight transparency */
 }
 
-/* Fix for animation container */
 #lottie-container {
     width: 300px;
     height: 300px;
     margin: 0 auto;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 2rem;
@@ -835,7 +709,6 @@ body.night-mode #loading-animation {
 
     #type-container {
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-        /* Adjust for smaller screens */
         gap: 15px;
     }
 
@@ -846,141 +719,105 @@ body.night-mode #loading-animation {
 
     #region-container {
         grid-template-columns: repeat(2, 1fr);
-        /* Two columns for small screens */
         gap: 20px;
-        /* Adjust gap for smaller screens */
     }
 
     #region-container .btn {
         width: 120px;
-        /* Slightly smaller buttons */
         height: 120px;
         background-size: 80%;
-        /* Adjust icon size */
     }
 }
 
 @media (max-width: 770px) {
     body::after {
         display: none;
-        /* Hide the images on smaller screens */
     }
 }
 
-/* Adjust footer padding for medium screens */
 @media (min-width: 770px) and (max-width: 1200px) {
     .footer {
         padding-top: 40px;
-        /* Reduce padding to prevent the footer from getting too large */
     }
 }
 
-/* Increase spacing between paragraphs */
 .paragraph-spacing {
     margin-bottom: 2rem;
-    /* Add consistent spacing between paragraphs */
 }
 
 .attributions-box {
     max-width: 600px;
-    /* Limit the width of the attributions box */
     border-radius: 10px;
-    /* Add rounded corners */
     overflow: hidden;
-    /* Ensure content stays within the box */
 }
 
 body:not(.night-mode) .attributions-box {
     background-color: #f8f9fa;
-    /* Light theme background */
     border: 1px solid #dee2e6;
-    /* Light theme border */
 }
 
 body.night-mode .attributions-box {
     background-color: #343a40;
-    /* Dark theme background */
     border: 1px solid #495057;
-    /* Dark theme border */
     color: #f8f9fa;
-    /* Ensure text is readable in dark mode */
 }
 
 .accordion-button {
     justify-content: center;
-    /* Center the text horizontally */
     text-align: center;
-    /* Ensure text alignment is centered */
     align-items: center;
-    /* Center the text vertically */
 }
 
 body.night-mode .accordion-button {
     background-color: #6c757d;
-    /* Grey background */
     color: #FFFFFF;
-    /* White font color */
 }
 
 body.night-mode .accordion-button:not(.collapsed) {
     background-color: #5a6268;
-    /* Darker grey when expanded */
     color: #FFFFFF;
-    /* Ensure font color remains white */
 }
 
 body.night-mode .accordion-button.collapsed {
     background-color: #343a40;
-    /* Even darker grey for collapsed state */
     color: #FFFFFF;
-    /* Ensure font color remains white */
 }
 
 body.night-mode .accordion-collapse {
     background-color: #343a40;
-    /* Dark grey background for dropdown content */
     color: #FFFFFF;
-    /* Ensure text is white for readability */
 }
 
 .pokeball-image {
     position: fixed;
-    /* Change to fixed to keep it at the bottom of the viewport */
     bottom: 60px;
-    /* Position above the footer */
     left: 50%;
     transform: translateX(-50%);
     width: 100px;
-    /* Adjust size as needed */
     height: auto;
     z-index: 10;
-    /* Ensure it appears above other elements */
     pointer-events: none;
-    /* Prevent interaction with the image */
 }
 
 @media (max-width: 1200px) {
     body::after {
         display: none;
-        /* Hide the toge1 and toge2 images */
     }
 }
 
 @media (max-width: 576px) {
     .pokeball-image {
         display: none;
-        /* Hide the pokeball image */
     }
 }
 
-/* Dropdown Menu Positioning */
 @media (max-width: 991.98px) {
     .navbar-collapse {
         position: absolute;
         top: 100%;
         right: 1rem;
         width: 200px;
-        background: #343a40;
+        background: #E52B41;
         border-radius: 0 0 8px 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         z-index: 1000;
@@ -994,24 +831,19 @@ body.night-mode .accordion-collapse {
         padding: 0.5rem;
     }
 
-    /* Center links in dropdown */
     .navbar-nav .nav-item {
         text-align: center;
         padding: 0.5rem 0;
     }
 }
 
-/* Final Pokémon Section Styles */
 #final-pokemon {
     padding: 2rem 0;
 }
 
-/* Dark mode flavor text override */
 body.night-mode #final-flavor-text {
     color: #FFFFFF !important;
-    /* Override Bootstrap's text-muted class */
     opacity: 0.9;
-    /* Keep some subtle contrast while maintaining readability */
 }
 
 #final-pokemon img {
@@ -1027,7 +859,6 @@ body.night-mode #final-flavor-text {
     transform: scale(1.05);
 }
 
-/* Add responsive adjustments for smaller screens */
 @media (max-width: 576px) {
     #final-pokemon img {
         width: 250px;
