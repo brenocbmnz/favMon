@@ -1,4 +1,4 @@
-Current Version: 0.9.1
+<b>Current Version: 0.9.1</b>
 
 favPoke is a project made with the aim of practicing my skills with HTML, CSS, and JavaScript. I hope you enjoy using it as much as I enjoyed making it!
 
