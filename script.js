@@ -455,7 +455,7 @@ async function loadPage(page) {
     }
 
     try {
-        // Change from '/pages/' to './pages/'
+        /// Change from '/pages/' to './pages/'
         const response = await fetch(`./pages/${page}.html`);
         if (!response.ok) {
             throw new Error(`Failed to load ${page}`);

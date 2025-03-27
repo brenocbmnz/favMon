@@ -72,24 +72,6 @@ body.night-mode .btn-dark .bi-github {
     padding: 0 !important;
 }
 
-/* Modal dark theme styles */
-body.night-mode .modal-content {
-    background-color: #252327;
-    color: var(--text-color);
-}
-
-body.night-mode .modal-header {
-    border-bottom: 1px solid #495057;
-}
-
-body.night-mode .modal-footer {
-    border-top: 1px solid #495057;
-}
-
-body.night-mode .btn-close {
-    filter: invert(1) grayscale(100%) brightness(200%);
-}
-
 /* General Styles */
 body {
     font-family: 'Roboto', sans-serif;
@@ -889,4 +871,28 @@ body.night-mode #final-flavor-text {
         max-height: 250px;
         min-height: 200px;
     }
+}
+
+/* Modal dark theme styles */
+body.night-mode .modal-content {
+    background-color: #252327 !important;
+    color: var(--text-color) !important;
+}
+
+body.night-mode .modal-header,
+body.night-mode .modal-footer {
+    border-color: #495057 !important;
+}
+
+body.night-mode .modal-title,
+body.night-mode .modal-body {
+    color: var(--text-color) !important;
+}
+
+body.night-mode .modal .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+body.night-mode .modal ul {
+    color: var(--text-color) !important;
 }
