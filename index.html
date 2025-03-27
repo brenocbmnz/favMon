@@ -29,10 +29,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link fw-bold" href="javascript:void(0)" onclick="loadPage('about')">About</a>
+                        <a class="nav-link fw-bold" href="#" onclick="loadPage('about'); return false;">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-bold" href="javascript:void(0)" onclick="loadPage('contact')">Contact</a>
+                        <a class="nav-link fw-bold" href="#" onclick="loadPage('contact'); return false;">Contact</a>
                     </li>
                     <li class="nav-item">
                         <i id="theme-icon" class="bi bi-brightness-high nav-link fw-bold" onclick="toggleNightMode()"
@@ -44,6 +44,24 @@
     </nav>
 
     <div id="content-container">
+        <!-- Add home screen section directly in index.html -->
+        <section id="home-screen" class="py-5">
+            <div class="container text-center">
+                <h1 class="display-4 fw-bold">Welcome to favPoke - Favorite Pokemon picker!</h1>
+                <p class="lead">Keep choosing your favorite Pokemon until you discover your absolute best. You can
+                    filter them
+                    by their native region or type if you like, or just play the game with every pokemon ever
+                    discovered!</p>
+                <div class="mt-5">
+                    <button onclick="goToSelectionScreen()">
+                        <span class="button_top">Find your Favorite!</span>
+                    </button>
+                    <button class="ms-3" data-bs-toggle="modal" data-bs-target="#howItWorksModal">
+                        <span class="button_top">How it works</span>
+                    </button>
+                </div>
+            </div>
+        </section>
     </div>
 
     <div class="modal fade" id="howItWorksModal" tabindex="-1" aria-labelledby="howItWorksModalLabel"

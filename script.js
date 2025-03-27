@@ -455,7 +455,8 @@ async function loadPage(page) {
     }
 
     try {
-        const response = await fetch(`/pages/${page}.html`);
+        // Change from '/pages/' to './pages/'
+        const response = await fetch(`./pages/${page}.html`);
         if (!response.ok) {
             throw new Error(`Failed to load ${page}`);
         }
@@ -470,6 +471,12 @@ async function loadPage(page) {
         }
     } catch (error) {
         console.error('Error loading page:', error);
+        // Fallback: If loading fails, try to find the section in the current DOM
+        const section = document.getElementById(`${page}-screen`);
+        if (section) {
+            hideAllGameSections();
+            section.classList.remove('d-none');
+        }
     }
 }
 
@@ -599,7 +606,7 @@ async function loadPage(page) {
     }
 
     try {
-        const response = await fetch(`/pages/${page}.html`);
+        const response = await fetch(`./pages/${page}.html`);
         if (!response.ok) {
             throw new Error(`Failed to load ${page}`);
         }
