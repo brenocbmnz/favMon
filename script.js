@@ -98,6 +98,33 @@ function resetGame() {
     activeFilter = { type: null, value: null };
 }
 
+// Add this new function after the pokemonCache declaration
+async function preloadPokemonData(pokemonIds) {
+    showLoadingScreen();
+    try {
+        const uncachedIds = pokemonIds.filter(id => !pokemonCache.has(id));
+        if (uncachedIds.length > 0) {
+            const batchSize = 10; // Number of simultaneous requests
+            for (let i = 0; i < uncachedIds.length; i += batchSize) {
+                const batch = uncachedIds.slice(i, i + batchSize);
+                await Promise.all(
+                    batch.map(async (id) => {
+                        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+                        const data = await response.json();
+                        pokemonCache.set(id, data);
+                    })
+                );
+            }
+        }
+        return true;
+    } catch (error) {
+        console.error('Failed to preload Pokémon data:', error);
+        return false;
+    } finally {
+        hideLoadingScreen();
+    }
+}
+
 // Start the game based on the selected filter
 function startGame(filter) {
     console.log(`startGame triggered with filter: ${filter}`); // Debugging log
@@ -139,8 +166,15 @@ function startGame(filter) {
             return;
         }
         activeFilter = { type: 'all', value: null };
-        favoritePokemon.classList.remove('d-none');
-        startNewRound(Array.from({ length: totalPokemon }, (_, i) => i + 1).filter(id => id <= 1025));
+        const allPokemonIds = Array.from({ length: totalPokemon }, (_, i) => i + 1).filter(id => id <= 1025);
+
+        // Preload all Pokémon data before starting
+        preloadPokemonData(allPokemonIds).then(success => {
+            if (success) {
+                favoritePokemon.classList.remove('d-none');
+                startNewRound(allPokemonIds);
+            }
+        });
     }
 }
 
@@ -152,12 +186,21 @@ function populateRegionButtons() {
     Object.keys(regions).forEach(regionKey => {
         const button = document.createElement('button');
         button.className = `btn btn-${regionKey}`; // Assign specific class for each region
-        button.onclick = () => {
+        button.onclick = async () => {
             activeFilter = { type: 'region', value: regionKey };
-            document.getElementById('region-selection').classList.add('d-none');
-            document.getElementById('favorite-pokemon').classList.remove('d-none');
             const { startId, endId } = regions[regionKey];
-            startNewRound(Array.from({ length: endId - startId + 1 }, (_, i) => startId + i).filter(id => id <= 1025));
+            const regionPokemonIds = Array.from(
+                { length: endId - startId + 1 },
+                (_, i) => startId + i
+            ).filter(id => id <= 1025);
+
+            // Preload region Pokémon data before starting
+            const success = await preloadPokemonData(regionPokemonIds);
+            if (success) {
+                document.getElementById('region-selection').classList.add('d-none');
+                document.getElementById('favorite-pokemon').classList.remove('d-none');
+                startNewRound(regionPokemonIds);
+            }
         };
         regionContainer.appendChild(button);
     });
@@ -188,14 +231,19 @@ async function populateTypeButtons() {
 
             button.onclick = async () => {
                 activeFilter = { type: 'type', value: type.name };
-                document.getElementById('type-selection').classList.add('d-none');
-                document.getElementById('favorite-pokemon').classList.remove('d-none');
                 const response = await fetch(`https://pokeapi.co/api/v2/type/${type.name}`);
                 const data = await response.json();
                 const typePokemonIds = data.pokemon
                     .map((p) => parseInt(p.pokemon.url.split('/').slice(-2, -1)[0]))
-                    .filter((id) => id <= 1025); // Exclude Pokémon with IDs higher than 1025
-                startNewRound(typePokemonIds);
+                    .filter((id) => id <= 1025);
+
+                // Preload type Pokémon data before starting
+                const success = await preloadPokemonData(typePokemonIds);
+                if (success) {
+                    document.getElementById('type-selection').classList.add('d-none');
+                    document.getElementById('favorite-pokemon').classList.remove('d-none');
+                    startNewRound(typePokemonIds);
+                }
             };
 
             typeContainer.appendChild(button);
@@ -240,22 +288,33 @@ function showLoadingScreen() {
     const loadingElement = document.getElementById('loading-animation');
     loadingElement.classList.remove('d-none');
 
-    if (!loadingAnimation) {
-        loadingAnimation = lottie.loadAnimation({
-            container: document.getElementById('lottie-container'),
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            path: './assets/pokeball.json'
-        });
+    // Destroy existing animation if it exists
+    if (loadingAnimation) {
+        loadingAnimation.destroy();
+        loadingAnimation = null;
     }
+
+    // Create new animation instance
+    loadingAnimation = lottie.loadAnimation({
+        container: document.getElementById('lottie-container'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: './assets/pokeball.json'
+    });
+
+    // Force the animation to play
+    loadingAnimation.play();
 }
 
 function hideLoadingScreen() {
     const loadingElement = document.getElementById('loading-animation');
     loadingElement.classList.add('d-none');
+
+    // Properly cleanup the animation
     if (loadingAnimation) {
-        loadingAnimation.stop();
+        loadingAnimation.destroy();
+        loadingAnimation = null;
     }
 }
 
@@ -391,6 +450,7 @@ function toggleNightMode() {
 
 // Add this new function to handle page loading
 async function loadPage(page) {
+    hideAllGameSections();
     const contentContainer = document.getElementById('content-container');
     if (!contentContainer) {
         console.error('Content container not found');
@@ -435,3 +495,120 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load the homepage content
     loadPage('home');
 });
+
+// Add this helper function after resetGame()
+function hideAllGameSections() {
+    const sections = [
+        'home-screen',
+        'three-button-menu',
+        'favorite-pokemon',
+        'region-selection',
+        'type-selection',
+        'final-pokemon'
+    ];
+
+    sections.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.classList.add('d-none');
+        }
+    });
+}
+
+// Replace the goToHomePage function
+function goToHomePage() {
+    console.log("goToHomePage triggered");
+    hideAllGameSections();
+
+    const homeScreen = document.getElementById('home-screen');
+    if (!homeScreen) {
+        console.error("homeScreen is missing in the DOM");
+        return;
+    }
+
+    homeScreen.classList.remove('d-none');
+    resetGame();
+}
+
+// Replace the goToSelectionScreen function
+function goToSelectionScreen() {
+    console.log("goToSelectionScreen triggered");
+    hideAllGameSections();
+
+    const threeButtonMenu = document.getElementById('three-button-menu');
+    if (!threeButtonMenu) {
+        console.error("threeButtonMenu is missing in the DOM");
+        return;
+    }
+
+    threeButtonMenu.classList.remove('d-none');
+}
+
+// Modify the startGame function
+function startGame(filter) {
+    console.log(`startGame triggered with filter: ${filter}`);
+    hideAllGameSections();
+
+    const favoritePokemon = document.getElementById('favorite-pokemon');
+    const regionSelection = document.getElementById('region-selection');
+    const typeSelection = document.getElementById('type-selection');
+
+    if (filter === 'region') {
+        if (!regionSelection) {
+            console.error("regionSelection is missing in the DOM");
+            return;
+        }
+        regionSelection.classList.remove('d-none');
+        populateRegionButtons();
+    } else if (filter === 'type') {
+        if (!typeSelection) {
+            console.error("typeSelection is missing in the DOM");
+            return;
+        }
+        typeSelection.classList.remove('d-none');
+        populateTypeButtons();
+    } else {
+        if (!favoritePokemon) {
+            console.error("favoritePokemon is missing in the DOM");
+            return;
+        }
+        activeFilter = { type: 'all', value: null };
+        const allPokemonIds = Array.from({ length: totalPokemon }, (_, i) => i + 1).filter(id => id <= 1025);
+
+        // Preload all Pokémon data before starting
+        preloadPokemonData(allPokemonIds).then(success => {
+            if (success) {
+                favoritePokemon.classList.remove('d-none');
+                startNewRound(allPokemonIds);
+            }
+        });
+    }
+}
+
+// Modify the loadPage function
+async function loadPage(page) {
+    hideAllGameSections();
+    const contentContainer = document.getElementById('content-container');
+    if (!contentContainer) {
+        console.error('Content container not found');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/pages/${page}.html`);
+        if (!response.ok) {
+            throw new Error(`Failed to load ${page}`);
+        }
+        const content = await response.text();
+        contentContainer.innerHTML = content;
+
+        if (page === 'home') {
+            const homeScreen = document.getElementById('home-screen');
+            if (homeScreen) {
+                homeScreen.classList.remove('d-none');
+            }
+        }
+    } catch (error) {
+        console.error('Error loading page:', error);
+    }
+}

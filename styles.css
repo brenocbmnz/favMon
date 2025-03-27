@@ -79,6 +79,24 @@ body.night-mode .btn-dark {
     /* Add a thin white border around the button */
 }
 
+/* Remove border around GitHub icon */
+.btn-dark .bi-github {
+    border: none;
+}
+
+/* Remove all spacing and borders from GitHub icon */
+.btn.btn-dark .bi-github {
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Override dark mode styles to ensure no borders */
+body.night-mode .btn-dark .bi-github {
+    border: none !important;
+    padding: 0 !important;
+}
+
 /* General Styles */
 body {
     font-family: 'Roboto', sans-serif;
@@ -160,6 +178,14 @@ body.night-mode .navbar {
     transition: color 0.3s ease;
 }
 
+/* Center navbar links vertically */
+.navbar .navbar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
 .navbar .nav-link:hover {
     color: #1E67FA;
     /* Updated hover color for navbar text */
@@ -184,6 +210,14 @@ body.night-mode .navbar {
     /* Slightly enlarge the icon on hover */
     transition: transform 0.2s ease, color 0.2s ease;
     /* Smooth transition */
+}
+
+/* Ensure the theme toggle icon aligns with the navbar links */
+.navbar .nav-link i#theme-icon {
+    font-size: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Ensure the home screen is visible initially */
@@ -515,6 +549,31 @@ body.night-mode .card:hover {
     /* Updated dark mode hover color */
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
     /* Add hover shadow effect */
+}
+
+/* Add this after the card styles */
+body.night-mode #final-message {
+    color: var(--text-color);
+    /* Use the theme text color variable */
+}
+
+/* Add this after the dark mode card styles */
+body.night-mode #final-pokemon .btn {
+    color: var(--text-color);
+    background-color: #7A929F;
+}
+
+body.night-mode #final-pokemon .btn:hover {
+    background-color: #621EFA;
+}
+
+#final-pokemon .btn {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+#final-pokemon .btn:hover {
+    background-color: var(--hover-color);
 }
 
 /* Filter Menu Buttons */
@@ -905,5 +964,66 @@ body.night-mode .accordion-collapse {
     .pokeball-image {
         display: none;
         /* Hide the pokeball image */
+    }
+}
+
+/* Dropdown Menu Positioning */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        right: 1rem;
+        width: 200px;
+        background: #343a40;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    body.night-mode .navbar-collapse {
+        background: #252327;
+    }
+
+    .navbar-nav {
+        padding: 0.5rem;
+    }
+
+    /* Center links in dropdown */
+    .navbar-nav .nav-item {
+        text-align: center;
+        padding: 0.5rem 0;
+    }
+}
+
+/* Final Pokémon Section Styles */
+#final-pokemon {
+    padding: 2rem 0;
+}
+
+#final-pokemon img {
+    width: 400px;
+    height: 300px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    margin: 2rem auto;
+    display: block;
+}
+
+#final-pokemon img:hover {
+    transform: scale(1.05);
+}
+
+/* Add responsive adjustments for smaller screens */
+@media (max-width: 576px) {
+    #final-pokemon img {
+        width: 250px;
+        height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    #final-pokemon img {
+        max-height: 250px;
+        min-height: 200px;
     }
 }
