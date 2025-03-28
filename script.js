@@ -517,6 +517,31 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {
         console.warn('Failed to load cached species data:', e);
     }
+
+    const modal = document.getElementById('howItWorksModal');
+    const focusTarget = document.getElementById('focusTarget');
+    const modalCloseButtons = modal.querySelectorAll('[data-bs-dismiss="modal"]');
+
+    if (modal && focusTarget) {
+        modal.addEventListener('show.bs.modal', () => {
+            modal.removeAttribute('inert');
+            modal.removeAttribute('aria-hidden');
+        });
+
+        modal.addEventListener('hide.bs.modal', () => {
+            modal.setAttribute('inert', 'true');
+            modal.setAttribute('aria-hidden', 'true');
+            focusTarget.focus(); // Move focus to the target outside the modal
+        });
+
+        modalCloseButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                modal.setAttribute('inert', 'true');
+                modal.setAttribute('aria-hidden', 'true');
+                focusTarget.focus(); // Ensure focus is moved outside the modal
+            });
+        });
+    }
 });
 
 function hideAllGameSections() {

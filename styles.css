@@ -352,6 +352,39 @@ body.night-mode .btn-theme:hover {
     justify-items: center;
 }
 
+@media (max-width: 395px) {
+    .home-buttons {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, auto);
+        gap: 20px;
+    }
+
+    .button-container.random-btn {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .button-container.type-btn {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .button-container.region-btn {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .button-container.all-btn {
+        grid-column: 1;
+        grid-row: 4;
+    }
+
+    .home-buttons .btn {
+        width: 100px;
+        height: 100px;
+    }
+}
+
 .button-container.random-btn {
     grid-column: 2;
     grid-row: 1;
@@ -1042,5 +1075,24 @@ body.night-mode .modal ul {
     .contact-buttons .btn {
         padding: 0.5rem;
         font-size: 0.9rem;
+    }
+}
+
+.home-page-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 395px) {
+    .home-page-buttons {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .home-page-buttons button {
+        width: 100%;
+        max-width: 280px;
     }
 }
