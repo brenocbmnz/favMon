@@ -40,3 +40,4 @@ app.post('/favorites', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+// Clear older species data to make room

@@ -41,7 +41,7 @@ const storageManager = {
 
     clearOldData() {
         try {
-            // Clear older species data to make room
+
             localStorage.removeItem('pokemonSpecies');
             sessionStorage.removeItem('pokemonSpecies');
         } catch (e) {
@@ -521,13 +521,13 @@ async function loadPage(page) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize tooltips
+
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 
-    // Existing code...
+
     const isNightMode = localStorage.getItem('nightMode') === 'true';
     const body = document.body;
     const themeIcon = document.getElementById('theme-icon');
@@ -572,14 +572,14 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.addEventListener('hide.bs.modal', () => {
             modal.setAttribute('inert', 'true');
             modal.setAttribute('aria-hidden', 'true');
-            focusTarget.focus(); // Move focus to the target outside the modal
+            focusTarget.focus();
         });
 
         modalCloseButtons.forEach(button => {
             button.addEventListener('click', () => {
                 modal.setAttribute('inert', 'true');
                 modal.setAttribute('aria-hidden', 'true');
-                focusTarget.focus(); // Ensure focus is moved outside the modal
+                focusTarget.focus();
             });
         });
     }
