@@ -1012,3 +1012,41 @@ body.night-mode .modal ul {
         max-width: 150px;
     }
 }
+
+.contact-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.contact-buttons .btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.contact-buttons .btn i {
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .contact-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 477px) {
+    .contact-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+
+    .contact-buttons .btn {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
