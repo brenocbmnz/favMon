@@ -8,6 +8,48 @@ let typesCache = null;
 let speciesCache = new Map();
 let loadingAnimation = null;
 
+// Add this storage management code after the initial variable declarations
+const storageManager = {
+    tryStoreData(key, data) {
+        try {
+            // Try localStorage first
+            localStorage.setItem(key, JSON.stringify(data));
+        } catch (e) {
+            if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+                try {
+                    // Fallback to sessionStorage if localStorage is full
+                    sessionStorage.setItem(key, JSON.stringify(data));
+                } catch (sessionError) {
+                    console.warn('Both localStorage and sessionStorage are full', sessionError);
+                    // Clear old data if needed
+                    this.clearOldData();
+                }
+            }
+        }
+    },
+
+    getData(key) {
+        // Try localStorage first
+        const localData = localStorage.getItem(key);
+        if (localData) {
+            return JSON.parse(localData);
+        }
+        // Fallback to sessionStorage
+        const sessionData = sessionStorage.getItem(key);
+        return sessionData ? JSON.parse(sessionData) : null;
+    },
+
+    clearOldData() {
+        try {
+            // Clear older species data to make room
+            localStorage.removeItem('pokemonSpecies');
+            sessionStorage.removeItem('pokemonSpecies');
+        } catch (e) {
+            console.warn('Failed to clear storage:', e);
+        }
+    }
+};
+
 // Define regions with ID ranges
 const regions = {
     kanto: { name: "Kanto", startId: 1, endId: 151 },
@@ -392,19 +434,18 @@ async function displayFinalPokemon(pokemonId) {
 
         let speciesData;
         const speciesUrl = data.species.url;
-        if (speciesCache.has(speciesUrl)) {
-            speciesData = speciesCache.get(speciesUrl);
+
+        // Check both storage types for cached species data
+        const cachedSpecies = storageManager.getData('pokemonSpecies') || {};
+        if (cachedSpecies[speciesUrl]) {
+            speciesData = cachedSpecies[speciesUrl];
         } else {
             const speciesResponse = await fetch(speciesUrl);
             speciesData = await speciesResponse.json();
-            speciesCache.set(speciesUrl, speciesData);
-            try {
-                const storedSpecies = JSON.parse(localStorage.getItem('pokemonSpecies') || '{}');
-                storedSpecies[speciesUrl] = speciesData;
-                localStorage.setItem('pokemonSpecies', JSON.stringify(storedSpecies));
-            } catch (e) {
-                console.warn('Failed to store species data in localStorage:', e);
-            }
+
+            // Store the new species data
+            cachedSpecies[speciesUrl] = speciesData;
+            storageManager.tryStoreData('pokemonSpecies', cachedSpecies);
         }
 
         const englishFlavorText = speciesData.flavor_text_entries.find(
@@ -507,15 +548,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-        const cachedSpecies = localStorage.getItem('pokemonSpecies');
+        const cachedSpecies = storageManager.getData('pokemonSpecies');
         if (cachedSpecies) {
-            const speciesData = JSON.parse(cachedSpecies);
-            Object.entries(speciesData).forEach(([url, data]) => {
+            Object.entries(cachedSpecies).forEach(([url, data]) => {
                 speciesCache.set(url, data);
             });
         }
     } catch (e) {
         console.warn('Failed to load cached species data:', e);
+        storageManager.clearOldData();
     }
 
     const modal = document.getElementById('howItWorksModal');
