@@ -42,6 +42,47 @@ const typeColors = {
     fairy: '#D685AD',
 };
 
+const storageManager = {
+    tryStoreData(key, data) {
+        try {
+            // Try localStorage first
+            localStorage.setItem(key, JSON.stringify(data));
+        } catch (e) {
+            if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+                try {
+                    // Fallback to sessionStorage if localStorage is full
+                    sessionStorage.setItem(key, JSON.stringify(data));
+                } catch (sessionError) {
+                    console.warn('Both localStorage and sessionStorage are full', sessionError);
+                    // Clear old data if needed
+                    this.clearOldData();
+                }
+            }
+        }
+    },
+
+    getData(key) {
+        // Try localStorage first
+        const localData = localStorage.getItem(key);
+        if (localData) {
+            return JSON.parse(localData);
+        }
+        // Fallback to sessionStorage
+        const sessionData = sessionStorage.getItem(key);
+        return sessionData ? JSON.parse(sessionData) : null;
+    },
+
+    clearOldData() {
+        try {
+            // Clear older species data to make room
+            localStorage.removeItem('pokemonSpecies');
+            sessionStorage.removeItem('pokemonSpecies');
+        } catch (e) {
+            console.warn('Failed to clear storage:', e);
+        }
+    }
+};
+
 function goToHomePage() {
     console.log("goToHomePage triggered");
 
