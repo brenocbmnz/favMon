@@ -21,7 +21,7 @@ app.get('/favorites', (req, res) => {
 app.post('/favorites', (req, res) => {
     const { pokemonId } = req.body;
     if (!pokemonId) {
-        return res.status(400).json({ error: 'Pokemon ID is required' });
+        return res.status(400).json({ error: 'Pokémon ID is required' });
     }
 
     let favorites = [];
