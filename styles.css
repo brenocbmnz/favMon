@@ -132,7 +132,8 @@ body.night-mode .navbar {
     font-size: 1.2rem;
     color: var(--text-color);
     text-transform: uppercase;
-    font-family: 'Bangers', cursive;
+    font-family: 'Poppins', sans-serif;
+    /* Change from 'Bangers' to 'Poppins' */
 }
 
 .navbar .navbar-brand:hover {
