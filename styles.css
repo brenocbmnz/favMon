@@ -88,6 +88,17 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.6;
+    visibility: hidden;
+    /* Hide content initially */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    /* Smooth transition for visibility */
+}
+
+body.theme-loaded {
+    visibility: visible;
+    /* Show content after theme is applied */
+    opacity: 1;
 }
 
 body::after {

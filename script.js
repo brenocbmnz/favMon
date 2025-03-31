@@ -525,13 +525,6 @@ async function loadPage(page) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-
-
     const isNightMode = localStorage.getItem('nightMode') === 'true';
     const body = document.body;
     const themeIcon = document.getElementById('theme-icon');
@@ -543,6 +536,9 @@ document.addEventListener('DOMContentLoaded', () => {
             themeIcon.classList.add('bi-moon-stars');
         }
     }
+
+    // Add the theme-loaded class to make the page visible
+    body.classList.add('theme-loaded');
 
     loadPage('home');
 
@@ -565,7 +561,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const modal = document.getElementById('howItWorksModal');
     const focusTarget = document.getElementById('focusTarget');
-    const modalCloseButtons = modal.querySelectorAll('[data-bs-dismiss="modal"]');
+    const modalCloseButtons = modal?.querySelectorAll('[data-bs-dismiss="modal"]');
 
     if (modal && focusTarget) {
         modal.addEventListener('show.bs.modal', () => {
@@ -579,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
             focusTarget.focus();
         });
 
-        modalCloseButtons.forEach(button => {
+        modalCloseButtons?.forEach(button => {
             button.addEventListener('click', () => {
                 modal.setAttribute('inert', 'true');
                 modal.setAttribute('aria-hidden', 'true');
