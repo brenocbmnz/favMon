@@ -288,7 +288,12 @@ async function populateTypeButtons() {
 }
 
 function shuffleArray(array) {
-    return array.sort(() => Math.random() - 0.5);
+    // Fisher-Yates Shuffle Algorithm for unbiased randomization
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
 
 function startNewRound(pokemonIds) {
@@ -657,10 +662,9 @@ function startGame(filter) {
             return;
         }
         activeFilter = { type: 'random', value: null };
-        const allPokemonIds = Array.from({ length: totalPokemon }, (_, i) => i + 1)
-            .filter(id => id <= 1025);
+        const allPokemonIds = Array.from({ length: totalPokemon }, (_, i) => i + 1);
         const shuffled = shuffleArray([...allPokemonIds]);
-        const randomSelection = shuffled.slice(0, 60);
+        const randomSelection = shuffled.slice(0, 60); // Select 60 Pokémon randomly
 
         preloadPokemonData(randomSelection).then(success => {
             if (success) {

@@ -1096,3 +1096,23 @@ body.night-mode .modal ul {
         max-width: 280px;
     }
 }
+
+@media (max-width: 1400px) {
+    .pokeball-image {
+        display: none;
+    }
+
+    body::after {
+        display: none;
+    }
+}
+
+@media (max-height: 935px) {
+    .pokeball-image {
+        display: none;
+    }
+
+    body::after {
+        display: none;
+    }
+}
