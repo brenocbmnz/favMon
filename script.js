@@ -476,6 +476,9 @@ function toggleNightMode() {
     const body = document.body;
     const themeIcon = document.getElementById('theme-icon');
 
+    // Add a class to trigger the transition
+    body.classList.add('transitioning');
+
     body.classList.toggle('night-mode');
     const isNightMode = body.classList.contains('night-mode');
 
@@ -488,6 +491,11 @@ function toggleNightMode() {
     }
 
     localStorage.setItem('nightMode', isNightMode);
+
+    // Remove the transitioning class after the transition duration
+    setTimeout(() => {
+        body.classList.remove('transitioning');
+    }, 500); // Match the CSS transition duration
 }
 
 async function loadPage(page) {
@@ -498,21 +506,30 @@ async function loadPage(page) {
         return;
     }
 
+    // Start fade-out effect
+    contentContainer.classList.remove('visible');
+
     try {
-        /// Change from '/pages/' to './pages/'
         const response = await fetch(`./pages/${page}.html`);
         if (!response.ok) {
             throw new Error(`Failed to load ${page}`);
         }
         const content = await response.text();
-        contentContainer.innerHTML = content;
 
-        if (page === 'home') {
-            const homeScreen = document.getElementById('home-screen');
-            if (homeScreen) {
-                homeScreen.classList.remove('d-none');
+        // Wait for fade-out to complete before updating content
+        setTimeout(() => {
+            contentContainer.innerHTML = content;
+
+            // Fade-in effect
+            contentContainer.classList.add('visible');
+
+            if (page === 'home') {
+                const homeScreen = document.getElementById('home-screen');
+                if (homeScreen) {
+                    homeScreen.classList.remove('d-none');
+                }
             }
-        }
+        }, 300); // Match the CSS transition duration
     } catch (error) {
         console.error('Error loading page:', error);
         // Fallback: If loading fails, try to find the section in the current DOM
@@ -693,20 +710,30 @@ async function loadPage(page) {
         return;
     }
 
+    // Start fade-out effect
+    contentContainer.classList.remove('visible');
+
     try {
         const response = await fetch(`./pages/${page}.html`);
         if (!response.ok) {
             throw new Error(`Failed to load ${page}`);
         }
         const content = await response.text();
-        contentContainer.innerHTML = content;
 
-        if (page === 'home') {
-            const homeScreen = document.getElementById('home-screen');
-            if (homeScreen) {
-                homeScreen.classList.remove('d-none');
+        // Wait for fade-out to complete before updating content
+        setTimeout(() => {
+            contentContainer.innerHTML = content;
+
+            // Fade-in effect
+            contentContainer.classList.add('visible');
+
+            if (page === 'home') {
+                const homeScreen = document.getElementById('home-screen');
+                if (homeScreen) {
+                    homeScreen.classList.remove('d-none');
+                }
             }
-        }
+        }, 300); // Match the CSS transition duration
     } catch (error) {
         console.error('Error loading page:', error);
     }
