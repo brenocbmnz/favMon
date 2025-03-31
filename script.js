@@ -498,6 +498,25 @@ function toggleNightMode() {
     }, 500); // Match the CSS transition duration
 }
 
+const pageCache = {};
+
+async function preloadPages(pages) {
+    try {
+        const preloadPromises = pages.map(async (page) => {
+            const response = await fetch(`./pages/${page}.html`);
+            if (response.ok) {
+                pageCache[page] = await response.text();
+            } else {
+                console.warn(`Failed to preload page: ${page}`);
+            }
+        });
+        await Promise.all(preloadPromises);
+        console.log("Pages preloaded successfully:", Object.keys(pageCache));
+    } catch (error) {
+        console.error("Error preloading pages:", error);
+    }
+}
+
 async function loadPage(page) {
     hideAllGameSections();
     const contentContainer = document.getElementById('content-container');
@@ -510,11 +529,8 @@ async function loadPage(page) {
     contentContainer.classList.remove('visible');
 
     try {
-        const response = await fetch(`./pages/${page}.html`);
-        if (!response.ok) {
-            throw new Error(`Failed to load ${page}`);
-        }
-        const content = await response.text();
+        // Use cached content if available
+        const content = pageCache[page] || (await fetch(`./pages/${page}.html`).then((res) => res.text()));
 
         // Wait for fade-out to complete before updating content
         setTimeout(() => {
@@ -529,15 +545,9 @@ async function loadPage(page) {
                     homeScreen.classList.remove('d-none');
                 }
             }
-        }, 300); // Match the CSS transition duration
+        }, 100); // Reduced delay for faster transitions
     } catch (error) {
         console.error('Error loading page:', error);
-        // Fallback: If loading fails, try to find the section in the current DOM
-        const section = document.getElementById(`${page}-screen`);
-        if (section) {
-            hideAllGameSections();
-            section.classList.remove('d-none');
-        }
     }
 }
 
@@ -556,6 +566,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add the theme-loaded class to make the page visible
     body.classList.add('theme-loaded');
+
+    // Preload pages for faster navigation
+    preloadPages(['about', 'contact', 'home']);
 
     loadPage('home');
 
